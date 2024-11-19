@@ -1,0 +1,38 @@
+{
+  "name": "antdv-pro",
+  "type": "module",
+  "version": "1.3.1",
+  "packageManager": "pnpm@9.1.1",
+  "author": "aibayanyu <aibayanyu@qq.com>",
+  "repository": "antdv-pro/antdv-pro",
+  "engines": {
+    "node": ">=18.15.0"
+  },
+  "scripts": {
+    "dev": "mist --host",
+    "build": "vue-tsc && mist build",
+    "clear:vercel": "rm -rf ./vercel.json",
+    "build:vercel": "run-s clear:vercel build:nitro",
+    "build:nitro": "mist build nitro",
+    "start:nirto": "node .output/server/index.mjs",
+    "preview": "mist preview",
+    "lint": "eslint src --fix",
+    "typecheck": "vue-tsc --noEmit",
+    "bump:patch": "changelogen --bump --output CHANGELOG.md --release",
+    "bump:minor": "changelogen --bump --output CHANGELOG.md --release --minor",
+    "bump:major": "changelogen --bump --output CHANGELOG.md --release --major",
+    "prepare": "husky",
+    "dir-tree": "esno ./scripts/dir-tree",
+    "gen:uno": "esno ./scripts/gen-unocss",
+    "toJS": "esno scripts/to-js"
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+
+  },
+  "lint-staged": {
+    "**/*.{vue,ts,js,jsx,tsx}": "eslint src --fix"
+  }
+}
