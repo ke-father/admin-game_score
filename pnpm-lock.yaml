@@ -232,10 +232,6 @@ importers:
         specifier: ^2.1.10
         version: 2.1.10(typescript@5.6.3)
 
-  packages/client: {}
-
-  packages/server: {}
-
 packages:
 
   '@amap/amap-jsapi-loader@1.0.1':

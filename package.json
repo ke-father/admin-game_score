@@ -6,7 +6,9 @@
   ],
   "scripts": {
     "start:server": "cd packages/server && npm run start",
-    "start:client": "cd packages/client && npm run dev"
+    "start:client": "cd packages/client && npm run dev",
+    "start:client:server": "cd packages/client && npm run start:nirto" ,
+    "start:client:build:nitro": "cd packages/client && npm run build:nitro"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

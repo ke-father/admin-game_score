@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
-const Game = require('./game');
 module.exports = function (sequelize, DataTypes) {
-    const game_category = sequelize.define('game_category',
+    return sequelize.define('game_category',
         {
             category_id: {
                 autoIncrement: true,
@@ -39,7 +38,4 @@ module.exports = function (sequelize, DataTypes) {
             ]
         }
     )
-
-    game_category.belongsTo(Game)
-    return game_category;
 };

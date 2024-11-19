@@ -158,3 +158,6 @@ Thumbs.db
 #//////////////////////////
 
 .vscode/
+
+.output
+.nitro

@@ -1,5 +1,5 @@
 import express = require('express')
-const db = require('../models/index.js')
+const { game } = require('../models/init-models.js')
 const router = express.Router()
 
 // 前台接口

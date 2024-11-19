@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
+const GameCategory = require('./game_category')
 module.exports = function(sequelize, DataTypes) {
-  const game = sequelize.define('game', {
+  return sequelize.define('game', {
     game_id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -70,6 +71,4 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-
-  return game
 };
