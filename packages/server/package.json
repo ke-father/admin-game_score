@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --exec \"npx ts-node\" ./bin/www"
+    "start": "nodemon  -e  ts,tsx  --exec ts-node ./bin/www"
   },
   "dependencies": {
 

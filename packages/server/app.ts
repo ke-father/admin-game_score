@@ -3,10 +3,11 @@ import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 
+// 配置环境变量
+require('dotenv').config();
+
 const express = require("express")
-
 const indexRouter = require("./routes/index")
-
 const app = express();
 
 app.use(logger('dev'));

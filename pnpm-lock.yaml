@@ -150,6 +150,9 @@ importers:
       directory-tree:
         specifier: ^3.5.2
         version: 3.5.2
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       esbuild:
         specifier: ^0.20.2
         version: 0.20.2
