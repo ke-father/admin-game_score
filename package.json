@@ -9,6 +9,7 @@
     "start:client": "cd packages/client && npm run dev",
     "start:client:server": "cd packages/client && npm run start:nirto",
     "start:client:build:nitro": "cd packages/client && npm run build:nitro",
+    "generate:Models": "cd packages/server/models && ts-node auto.ts",
     "test": "cd packages/utils && ts-node request.ts"
   },
   "dependencies": {

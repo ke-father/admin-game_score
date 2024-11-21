@@ -39,6 +39,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    openid: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "用户唯一标识"
     }
   }, {
     sequelize,

@@ -1,6 +1,6 @@
 import * as process from "process";
 import path from "path";
-import axios, {AxiosInstance, AxiosRequestConfig} from 'axios'
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
 
 // 配置环境变量
 require('dotenv').config({
@@ -36,28 +36,70 @@ class CommonRequest {
         this.requset = axios.create({
             baseURL: this.baseUrl
         })
+
+        // 请求拦截器
+        this.requset.interceptors.request.use(function (config) {
+            // console.log('config', config)
+            // if (config) throw new Error('错误')
+            // 在发送请求之前做些什么
+            return config;
+        }, function (error) {
+            // 对请求错误做些什么
+            return Promise.reject(error);
+        })
+
+        // 响应拦截器
+        this.requset.interceptors.response.use(function (response) {
+            // console.log('response', response)
+            // 2xx 范围内的状态码都会触发该函数。
+            // 对响应数据做点什么
+            return response;
+        }, function (error) {
+            // 超出 2xx 范围的状态码都会触发该函数。
+            // 对响应错误做点什么
+            return Promise.reject(error);
+        })
+    }
+
+    // 生成响应格式
+    generateResponse (type: 'success' | 'error', { status, data }: AxiosResponse) {
+        // const
+
+        const responseMap = {
+            success: () => ({
+                ...data
+            }),
+            error: () => ({
+                ...data
+            })
+        }
+
+        return responseMap[type]()
     }
 
     private async httpRequest (config: IConfig, resolve: Function, reject: Function) {
         try {
-            console.log(this.requset    )
             // 发起请求
             const res = await this.requset({
                 ...config
             })
 
-            console.log(res)
-
-            resolve(res)
+            resolve(this.generateResponse('success', res))
         } catch (e) {
-            console.log(e, 1111)
-            reject(e)
+            reject(this.generateResponse('error', e as AxiosResponse))
         }
     }
 
-    get (config: IConfig) {
+    get (url: string, params: object, config: IConfig = {}) {
+        const getConfig: IConfig = {
+            ...config,
+            url,
+            params,
+            method: 'GET'
+        }
+
         return new Promise( async (resolve, reject) => {
-           await this.httpRequest(config, resolve, reject)
+           await this.httpRequest(getConfig, resolve, reject)
         })
     }
 
@@ -69,8 +111,6 @@ class CommonRequest {
             method: 'POST'
         }
 
-        console.log(postConfig)
-
         return new Promise(async (resolve, reject) => {
             await this.httpRequest(postConfig, resolve, reject)
         })
@@ -81,12 +121,14 @@ class CommonRequest {
     delete () {}
 }
 
-const request = new CommonRequest()
-request.post('/wechat/login', {
-    code: 110
-}, {
-    url: '/login',
-}).then((res: any) => {
-    console.log(res)
-})
+// const request = new CommonRequest()
+// request.post('/wechat/login', {
+//     code: 110
+// }, {
+//     url: '/login',
+// }).then((res: any) => {
+//     console.log('res', res)
+// }).catch(e => {
+//     console.log('error', e)
+// })
 export default CommonRequest

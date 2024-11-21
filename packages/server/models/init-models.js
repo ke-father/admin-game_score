@@ -11,6 +11,7 @@ const _team_foul = require("./team_foul");
 const _team_member = require("./team_member");
 const _team_pause = require("./team_pause");
 const _team_score = require("./team_score");
+const _wechat_session = require("./wechat_session");
 
 function initModels(sequelize) {
   const game = _game(sequelize, DataTypes);
@@ -25,6 +26,7 @@ function initModels(sequelize) {
   const team_member = _team_member(sequelize, DataTypes);
   const team_pause = _team_pause(sequelize, DataTypes);
   const team_score = _team_score(sequelize, DataTypes);
+  const wechat_session = _wechat_session(sequelize, DataTypes);
 
   person_follow_game.belongsTo(game, { as: "game", foreignKey: "game_id"});
   game.hasMany(person_follow_game, { as: "person_follow_games", foreignKey: "game_id"});
@@ -62,6 +64,8 @@ function initModels(sequelize) {
   team.hasMany(team_pause, { as: "team_pauses", foreignKey: "team_id"});
   team_score.belongsTo(team, { as: "team", foreignKey: "team_id"});
   team.hasMany(team_score, { as: "team_scores", foreignKey: "team_id"});
+  wechat_session.belongsTo(person, { as: "person", foreignKey: "openid"});
+  person.hasOne(wechat_session, { as: "wechat_sessions", foreignKey: "openid"});
 
   return {
     game,
@@ -76,6 +80,7 @@ function initModels(sequelize) {
     team_member,
     team_pause,
     team_score,
+    wechat_session,
   };
 }
 module.exports = initModels;

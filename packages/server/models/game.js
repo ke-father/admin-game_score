@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const GameCategory = require('./game_category')
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('game', {
     game_id: {
