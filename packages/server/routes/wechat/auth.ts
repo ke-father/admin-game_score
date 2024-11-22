@@ -2,9 +2,10 @@ import express, { Request, Response } from 'express'
 import { BadRequest } from "http-errors";
 import {successResponse, failureResponse} from "../../utils/response";
 import CommonRequest from "../../../utils/request";
+import jwt from "jsonwebtoken";
 
 // 获取wechat_session模型
-const { wechat_session } = require('../../models')
+const { Wechat_session } = require('../../models')
 
 const router = express.Router()
 
@@ -40,7 +41,7 @@ const getWeChatSession = async (code: string): Promise<IWeChatSession> => {
 
 const changeWeChatSession = async (data: IWeChatSession) => {
     // 查找
-    const wechatSession = await wechat_session.findOne({
+    const wechatSession = await Wechat_session.findOne({
         where: {
             openid: data.openid
         }
@@ -48,15 +49,13 @@ const changeWeChatSession = async (data: IWeChatSession) => {
 
     // 已存在内容更新操作
     if (wechatSession) return await wechatSession.update({
-        session_key: data.session_key,
-        unionid: data.unionid
+        session_key: data.session_key
     })
 
     // 未存在内容创建操作
-    return await wechat_session.create({
+    return await Wechat_session.create({
         openid: data.openid,
-        session_key: data.session_key,
-        unionid: data.unionid
+        session_key: data.session_key
     })
 }
 
@@ -67,16 +66,24 @@ export const login = async (req: Request, res: Response) => {
         if (!code) throw new BadRequest('code未传入')
 
         let data = await getWeChatSession(code)
-        console.log(data)
+        // console.log(data)
 
         if (data.errcode !== 0 && !data.openid) throw new BadRequest('微信登录失败')
+
+        // console.log(code)
+
+        const JWT_SECRET: string = process.env.JWT_SECRET as string
+
+        // 生成token @ts-ignore
+        const token = jwt.sign({ openid: data.openid }, JWT_SECRET, {
+            expiresIn: '2d'
+        });
+        data.openid = token
 
         await changeWeChatSession(data)
 
         successResponse(res, '请求成功', {
-            session_key: data.session_key,
-            unionid: data.unionid,
-            openid: data.openid
+           token
         })
     } catch (e) {
         console.log(e)

@@ -1,38 +1,43 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('game_category', {
-    category_id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
+'use strict';
+const {
+  Model
+} = require('sequelize');
+const moment = require('moment')
+module.exports = (sequelize, DataTypes) => {
+  class Game_category extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      models.Game_category.hasMany(models.Game_play_style, {
+        foreignKey: 'category_id',
+        as: 'game_play_styles'
+      })
+    }
+  }
+  Game_category.init({
+    title: DataTypes.STRING,
+    rank: DataTypes.INTEGER,
+    createdAt: {
+      type: DataTypes.DATETIME,
+      defaultValue: DataTypes.NOW,
+      get () {
+        return moment(this.getDataValue(Game_category.createdAt)).format('LL')
+      }
     },
-    category_name: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: "unique_category_name"
+    updatedAt: {
+      type: DataTypes.DATETIME,
+      defaultValue: DataTypes.NOW,
+      get () {
+        return moment(this.getDataValue(Game_category.updatedAt)).format('LL')
+      }
     }
   }, {
     sequelize,
-    tableName: 'game_category',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "category_id" },
-        ]
-      },
-      {
-        name: "unique_category_name",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "category_name" },
-        ]
-      },
-    ]
+    modelName: 'Game_category',
   });
+  return Game_category;
 };

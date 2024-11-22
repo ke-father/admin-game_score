@@ -1,35 +1,31 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('wechat_session', {
-    session_key: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      comment: "微信小程序会话密钥"
-    },
-    unionid: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      comment: "用户在开放平台的唯一标识符"
-    },
-    openid: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      primaryKey: true,
-      comment: "用户唯一标识"
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Wechat_session extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
+  }
+  Wechat_session.init({
+    openid: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+      allowNull: false,
+      unique: true,
+      comment: '微信openid'
+    },
+    session_key: DataTypes.STRING,
+    unionid: DataTypes.STRING
   }, {
     sequelize,
-    tableName: 'wechat_session',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "openid" },
-        ]
-      },
-    ]
+    modelName: 'Wechat_session',
   });
+  return Wechat_session;
 };
