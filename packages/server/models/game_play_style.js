@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.Game_play_style.belongsTo(models.Game_category, {
-        foreignKey: 'category_id',
+        foreignKey: 'id',
         as: 'game_category'
       })
     }
   }
   Game_play_style.init({
-    category_id: {
+    categoryId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false
     },

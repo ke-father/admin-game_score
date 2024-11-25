@@ -26,7 +26,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-console.log(`[Server] Server running port at ${port}`);
+console.warn(`[Server] Server started at ${port}`);
 
 /**
  * Normalize a port into a number, string, or false.

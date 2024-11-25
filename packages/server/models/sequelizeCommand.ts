@@ -14,7 +14,25 @@ const command = new Map<string, object>([
     [
         'Game_play_style',
         [
-            'sequelize model:generate --name Game_play_style --attributes category_id:integer,title:string,rank:integer'
+            'sequelize model:generate --name Game_play_style --attributes categoryId:integer,title:string,rank:integer'
+        ]
+    ],
+    [
+        'Game',
+        [
+            'sequelize model:generate --name Game --attributes categoryId:integer,gamePlayStyleId:integer,name:string,logo:string,signature:text,description:text'
+        ]
+    ],
+    [
+        'Team',
+        [
+            'sequelize model:generate --name Team --attributes gameId:integer,name:string,logo:string,signature:string,description:text,rank:integer,score:integer,foul:integer,pause:integer'
+        ]
+    ],
+    [
+        'Team_member',
+        [
+            'sequelize model:generate --name Team_member --attributes teamId:integer,name:string'
         ]
     ]
 ])

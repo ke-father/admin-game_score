@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.Game_category.hasMany(models.Game_play_style, {
-        foreignKey: 'category_id',
+        foreignKey: 'categoryId',
         as: 'game_play_styles'
       })
     }
@@ -22,14 +22,14 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     rank: DataTypes.INTEGER,
     createdAt: {
-      type: DataTypes.DATETIME,
+      type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
       get () {
         return moment(this.getDataValue(Game_category.createdAt)).format('LL')
       }
     },
     updatedAt: {
-      type: DataTypes.DATETIME,
+      type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
       get () {
         return moment(this.getDataValue(Game_category.updatedAt)).format('LL')

@@ -2,6 +2,7 @@ import createHttpError from 'http-errors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import server from './websocket-app'
 
 // 配置环境变量
 require('dotenv').config({
@@ -36,5 +37,9 @@ app.use((err: any, req: any, res: any) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// 启动websocket服务
+// server.start()
+//     .then(() => console.warn(`[Websocket] WebSocket Server started at ${process.env.WEBSOCKET_SERVER_PORT}`))
 
 module.exports = app;
