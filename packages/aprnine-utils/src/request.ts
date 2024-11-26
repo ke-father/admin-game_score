@@ -22,7 +22,7 @@ class CommonRequest {
     private beforeRequest: Function | null = null
     // 请求后置操作
     private afterRequest: Function | null = null
-    private requset: AxiosInstance = null!
+    private request: AxiosInstance = null!
 
     constructor(params: ICommonRequestParams = {}) {
         if (params.baseUrl) this.baseUrl = params.baseUrl
@@ -33,12 +33,12 @@ class CommonRequest {
     }
 
     init () {
-        this.requset = axios.create({
+        this.request = axios.create({
             baseURL: this.baseUrl
         })
 
         // 请求拦截器
-        this.requset.interceptors.request.use(function (config) {
+        this.request.interceptors.request.use(function (config) {
             // console.log('config', config)
             // if (config) throw new Error('错误')
             // 在发送请求之前做些什么
@@ -49,7 +49,7 @@ class CommonRequest {
         })
 
         // 响应拦截器
-        this.requset.interceptors.response.use(function (response) {
+        this.request.interceptors.response.use(function (response) {
             // console.log('response', response)
             // 2xx 范围内的状态码都会触发该函数。
             // 对响应数据做点什么
@@ -80,7 +80,7 @@ class CommonRequest {
     private async httpRequest (config: IConfig, resolve: Function, reject: Function) {
         try {
             // 发起请求
-            const res = await this.requset({
+            const res = await this.request({
                 ...config
             })
 
@@ -121,14 +121,4 @@ class CommonRequest {
     delete () {}
 }
 
-// const request = new CommonRequest()
-// request.post('/wechat/login', {
-//     code: 110
-// }, {
-//     url: '/login',
-// }).then((res: any) => {
-//     console.log('res', res)
-// }).catch(e => {
-//     console.log('error', e)
-// })
 export default CommonRequest
