@@ -2,11 +2,12 @@
 import { Connection } from 'aprnine-websocket/server'
 import User from './User'
 import Singleton from 'aprnine-utils/src/Singleton'
+import {WebsocketApi} from "../types/websocket-enum";
 const { User: UserModel } = require('../models')
 
 type ICreateUser = {
     user: Omit<User, 'connection'>
-    connection: Connection
+    connection: Connection<WebsocketApi>
 }
 
 // 用户

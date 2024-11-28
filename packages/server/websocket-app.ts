@@ -1,5 +1,5 @@
 // @ts-ignore
-import {Connection, MyServer} from "aprnine-websocket/server";
+import { MyServer } from 'aprnine-websocket/server';
 import DataManager from "./global/DataManager";
 import path from "path";
 import {WebsocketApi} from "./types/websocket-enum";
@@ -27,6 +27,5 @@ server.on(MyServer.disconnection, () => {
 })
 
 websocketEvent(server)
-
 
 export default server

@@ -32,8 +32,8 @@ export default function (websocketApp: MyServer) {
     //     return game
     // })
 
-    // @ts-ignore 加入比赛内容
-    websocketApp.setApi<IRequest[WebsocketApi.JOIN_GAME]>(WebsocketApi.JOIN_GAME, (connection, args) => {
+    // 加入比赛内容
+    websocketApp.setApi<IRequest[WebsocketApi.JOIN_GAME]>(WebsocketApi.JOIN_GAME, (connection: Connection<WebsocketApi>, args) => {
         console.log(WebsocketApi.JOIN_GAME, args)
         if (!args.userId || !args.gameId) throw new BadRequest('请传入用户ID和比赛ID')
 
@@ -54,8 +54,8 @@ export default function (websocketApp: MyServer) {
         return game
     })
 
-    // @ts-ignore 更新比赛信息
-    websocketApp.setApi<IRequest[WebsocketApi.UPDATE_GAME_INFO_CLIENT]>(WebsocketApi.UPDATE_GAME_INFO_CLIENT, (connection, args) => {
+    // 更新比赛信息
+    websocketApp.setApi<IRequest[WebsocketApi.UPDATE_GAME_INFO_CLIENT]>(WebsocketApi.UPDATE_GAME_INFO_CLIENT, (connection: Connection<WebsocketApi>, args) => {
         console.log(WebsocketApi.UPDATE_GAME_INFO_SERVER, args)
         const { userId, gameId, gameInfo } = args
         if (!userId || !gameId) throw new BadRequest('请传入用户ID和比赛ID')

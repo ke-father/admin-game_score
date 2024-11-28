@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "strict": true,
+    "moduleResolution": "node16",
+    "target": "ES2018",
+    "module": "Node16",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
-  },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist"]
+    "baseUrl": ".",
+    "paths": {
+      "aprnine-websocket": ["../aprnine-websocket/src"],
+      "aprnine-websocket/*": ["../aprnine-websocket/src/*"]
+    }
+  }
 }

@@ -23,7 +23,9 @@
     "multer-aliyun-oss": "^2.1.3",
     "mysql2": "^3.11.4",
     "sequelize": "^6.37.5",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "aprnine-utils": "workspace:*",
+    "aprnine-websocket": "workspace:*"
   },
   "devDependencies": {
     "@types/ali-oss": "^6.16.11",

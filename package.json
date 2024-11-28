@@ -14,8 +14,8 @@
     "build:aprnine-websocket": "cd packages/aprnine-websocket && npm run build"
   },
   "dependencies": {
-    "aprnine-utils": "link:E:/MyProjects/game_score/game_score_application/packages/aprnine-utils",
-    "aprnine-websocket": "link:E:/MyProjects/game_score/game_score_application/packages/aprnine-websocket"
+    "aprnine-utils": "workspace:*",
+    "aprnine-websocket": "workspace:*"
   },
   "devDependencies": {
     "dts-generator": "^3.0.0",

@@ -1,38 +1,18 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
-        "emitDeclarationOnly": true,
-        "allowImportingTsExtensions": true,
-        "moduleResolution": "node",
-        "target": "ESNext",
-        "module":"commonjs",
-        "lib": ["ESNext", "ES2016", "ES2017", "DOM"],
+        "target": "ES2018",
+        "module": "CommonJS",
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "outDir": "./dist",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "resolveJsonModule": true,
-        "declarationDir": "dist",
-        "outDir": "dist",
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "paths": {
-            "*": [
-                "src/*",
-                "test/*"
-            ]
-        }
+        "rootDir": "./src",
+        "typeRoots": ["./src/types", "./node_modules/@types"]
     },
-    "include": [
-        "src/**/*.ts",
-        "test/**/*.ts"
-    ],
-    "ts-node": {
-        "compilerOptions": {
-            "module": "esnext"
-        },
-        "transpileOnly": true,
-        "files": true
-    }
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
 }

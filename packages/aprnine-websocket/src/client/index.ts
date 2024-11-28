@@ -1,3 +1,1 @@
-import {MyClient} from "./MyClient";
-
-export {MyClient}
+export { MyClient } from './MyClient';

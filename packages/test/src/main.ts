@@ -1,6 +1,8 @@
-import { MyClient } from 'aprnine-websocket/client'
+import { MyClient } from 'aprnine-websocket/client';
 import CommonRequest from 'aprnine-utils/src/request'
 import {IRequest, WebsocketApi} from "./websocket-enum.ts";
+
+console.log(window.location.pathname)
 
 if (window.location.pathname === '/') {
     const request = new CommonRequest({ baseUrl: 'http://localhost:4949' })
@@ -53,10 +55,18 @@ if (window.location.pathname === '/watch') {
             userId: 2,
             gameId: 1
         })
-        await client.listenMsg(WebsocketApi.UPDATE_GAME_INFO_SERVER, (data) => {
+        await client.listenMsg(WebsocketApi.UPDATE_GAME_INFO_SERVER, (data: GameInfoData) => {
             console.log(data)
         }, this)
     })()
+}
+
+// 添加类型定义
+interface GameInfoData {
+    // 根据你的实际数据结构定义
+    gameName: string;
+    gameId: number;
+    // ... 其他属性
 }
 
 

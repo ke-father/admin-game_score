@@ -25,7 +25,7 @@ export interface IRequest {
     [WebsocketApi.UPDATE_GAME_INFO_CLIENT]: {
         userId: number,
         gameId: number,
-        gameInfo: typeof Game
+        gameInfo: Game
     }
 }
 

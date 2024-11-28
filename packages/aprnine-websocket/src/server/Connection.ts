@@ -7,7 +7,8 @@ type IItem = {
     ctx: unknown;
 }
 
-export class Connection<T> extends EventEmitter {
+export class Connection<T = string> extends EventEmitter {
+    [Key: string]: any
     // 发布订阅模式
     private messageMap: Map<string, Array<IItem>> = new Map();
 
@@ -22,7 +23,6 @@ export class Connection<T> extends EventEmitter {
             const {name, data } = JSON.parse(buffer)
 
             try {
-
                 if (this.server.ApiMap.has(name)) {
                     try {
                         const cb = this.server.ApiMap.get(name)

@@ -10,7 +10,9 @@
   },
   "devDependencies": {
     "typescript": "~5.6.2",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "aprnine-utils": "workspace:*",
+    "aprnine-websocket": "workspace:*"
   },
   "dependencies": {
   }

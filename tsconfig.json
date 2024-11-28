@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node16",
+    "paths": {
+      "aprnine-websocket": ["packages/aprnine-websocket/src"],
+      "aprnine-websocket/*": ["packages/aprnine-websocket/src/*"],
+      "aprnine-utils/*": ["packages/aprnine-utils/src/*"]
+    }
+  }
+} 

@@ -1,50 +1,21 @@
 {
   "name": "aprnine-websocket",
   "version": "1.0.0",
-  "description": "自用的websocket封装实例",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "dist/index.d.ts",
-  "allowImportingTsExtensions": true,
-  "files": [
-    "dist"
-  ],
   "exports": {
-    ".": {
-      "node": "./dist/server/index.js",
-      "browser": "./dist/client/index.cjs",
-      "default": "./dist/server/index.js"
+    "./client": {
+      "types": "./src/client/index.ts",
+      "default": "./src/client/index.ts"
     },
-    "./server": "./src/server/index.ts",
-    "./client": "./src/client/index.ts"
+    "./server": {
+      "types": "./src/server/index.ts",
+      "default": "./src/server/index.ts"
+    }
   },
-  "scripts": {
-    "vitest:structure": "ts-node --esm vitest.structure.ts",
-    "build": "tsc && rollup -c",
-    "test:vitest": "vitest --watch test"
-  },
-  "keywords": [
-    "websocket"
-  ],
-  "author": "aprnine",
-  "license": "ISC",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.1",
-    "@rollup/plugin-node-resolve": "^15.3.0",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.1",
-    "@types/jest": "^29.5.14",
     "@types/node": "^22.9.0",
     "@types/ws": "^8.5.13",
     "rimraf": "^6.0.1",
-    "rollup": "^4.24.4",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "ts-node": "^10.9.2",
-    "tslib": "^2.8.1",
-    "tsup": "^8.3.5",
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.5"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "ws": "^8.18.0"
