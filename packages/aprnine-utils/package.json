@@ -2,18 +2,15 @@
   "name": "aprnine-utils",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "tsc:build": "tsc",
     "build": "tsc && rollup -c",
     "test": "ts-node ./test.ts"
   },
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    "./*": "./*.ts"
   },
   "keywords": [],
   "author": "",
@@ -25,12 +22,13 @@
     "@rollup/plugin-typescript": "^12.1.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.9.3",
-    "typescript": "^5.7.2",
     "rollup": "^4.24.4",
     "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-typescript2": "^0.36.0"
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.7.2"
   },
   "dependencies": {
+    "aprnine-websocket": "^1.0.0",
     "axios": "^1.7.7"
   }
 }

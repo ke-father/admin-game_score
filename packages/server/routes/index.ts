@@ -16,12 +16,4 @@ router.use('/wechat', require('./wechat'))
 // 上传接口
 router.use('/uploads', require('./upload'))
 
-router.get('/test', (req, res) => {
-    const { id } = req.query as { id: number, [key: string]: any }
-    DataManager.Instance.id = id
-    successResponse(res, '响应', {
-        id: DataManager.Instance.id
-    })
-})
-
 module.exports = router

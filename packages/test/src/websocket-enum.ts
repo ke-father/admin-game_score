@@ -1,4 +1,19 @@
-import Game from "../entity/Game";
+interface IGame {
+    // 比赛id
+    gameId: number
+    // 比赛分类id
+    categoryId: number
+    // 比赛方式id
+    playStyleId: number
+    // 比赛名称
+    gameName: string
+    // 比赛logo
+    logo?: string
+    // 比赛签名
+    signature?: string
+    // 比赛简介
+    description?: string
+}
 
 export enum WebsocketApi {
     // 初始化比赛
@@ -25,12 +40,12 @@ export interface IRequest {
     [WebsocketApi.UPDATE_GAME_INFO_CLIENT]: {
         userId: number,
         gameId: number,
-        gameInfo: typeof Game
+        gameInfo: IGame
     }
 }
 
 export interface IResponse {
-    [WebsocketApi.UPDATE_GAME_INFO_SERVER]: Game
+    [WebsocketApi.UPDATE_GAME_INFO_SERVER]: IGame
 }
 
 

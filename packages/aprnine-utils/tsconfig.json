@@ -4,7 +4,7 @@
     "allowImportingTsExtensions": true,
     "moduleResolution": "node",
     "target": "esnext",
-    "module":"esnext",
+    "module":"commonjs",
     "lib": ["esnext", "es2016", "es2017", "dom"],
     "strict": true,
     "declaration": true,

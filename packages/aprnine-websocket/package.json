@@ -2,8 +2,8 @@
   "name": "aprnine-websocket",
   "version": "1.0.0",
   "description": "自用的websocket封装实例",
-  "type": "module",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "allowImportingTsExtensions": true,
   "files": [
@@ -11,14 +11,17 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+      "node": "./dist/server/index.js",
+      "browser": "./dist/client/index.cjs",
+      "default": "./dist/server/index.js"
+    },
+    "./server": "./src/server/index.ts",
+    "./client": "./src/client/index.ts"
   },
   "scripts": {
     "vitest:structure": "ts-node --esm vitest.structure.ts",
     "build": "tsc && rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:vitest": "vitest --watch test"
   },
   "keywords": [
     "websocket"
@@ -37,10 +40,11 @@
     "rollup": "^4.24.4",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-typescript2": "^0.36.0",
+    "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
     "tsup": "^8.3.5",
     "typescript": "^5.6.3",
-    "vitest": "^2.1.4"
+    "vitest": "^2.1.5"
   },
   "dependencies": {
     "ws": "^8.18.0"

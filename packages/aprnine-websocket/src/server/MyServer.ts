@@ -1,13 +1,13 @@
 import {WebSocketServer} from "ws";
-import {Connection} from "./Connection.ts";
+import {Connection} from "./Connection";
 import EventEmitter from "stream";
 
-export class MyServer extends EventEmitter{
+export class MyServer <IMyServerApi = string> extends EventEmitter{
     port: number
     wss: WebSocketServer = null!
     // 链接用户
-    connections: Set<Connection> = new Set()
-    ApiMap: Map<string, Function> = new Map()
+    connections: Set<Connection<IMyServerApi>> = new Set()
+    ApiMap: Map<IMyServerApi, Function> = new Map()
 
     // 客户端链接
     static connection ='connection'
@@ -42,7 +42,7 @@ export class MyServer extends EventEmitter{
             })
 
             this.wss.on('connection', (ws) => {
-                const connection = new Connection(this, ws)
+                const connection = new Connection<IMyServerApi>(this, ws)
                 this.connections.add(connection)
                 this.emit('connection', connection)
 
@@ -55,7 +55,7 @@ export class MyServer extends EventEmitter{
         })
     }
 
-    setApi  (name: string, cb: (connection: Connection, args: any) => void) {
+    setApi <U = any> (name: IMyServerApi, cb: (connection: Connection<IMyServerApi>, args: U) => void) {
         this.ApiMap.set(name, cb)
     }
 }

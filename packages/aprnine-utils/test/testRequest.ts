@@ -1,4 +1,4 @@
-import CommonRequest from "./src/request.ts";
+import {CommonRequest} from "../src";
 
 const request = new CommonRequest({ baseUrl: 'http://localhost:4949' })
 

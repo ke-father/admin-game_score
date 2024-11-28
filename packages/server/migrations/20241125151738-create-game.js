@@ -11,13 +11,11 @@ module.exports = {
       },
       categoryId: {
         type: Sequelize.INTEGER.UNSIGNED,
-        unique: true,
         allowNull: false,
         comment: '比赛类别'
       },
       gamePlayStyleId: {
         type: Sequelize.INTEGER.UNSIGNED,
-        unique: true,
         allowNull: false,
         comment: '比赛类型'
       },

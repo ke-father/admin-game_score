@@ -1,11 +1,4 @@
-import * as process from "process";
-import path from "path";
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
-
-// 配置环境变量
-require('dotenv').config({
-    path: path.resolve(__dirname, '../../.env')
-});
 
 interface ICommonRequestParams {
     baseUrl?: string,
@@ -15,13 +8,13 @@ interface ICommonRequestParams {
 
 type IConfig = Omit<AxiosRequestConfig, 'baseURL'>
 
-class CommonRequest {
+export default class CommonRequest {
     // 请求默认地址
-    private baseUrl = process.env.BASE_URL
+    private readonly baseUrl: string = null!
     // 请求前置操作
-    private beforeRequest: Function | null = null
+    private beforeRequest: Function | null = null!
     // 请求后置操作
-    private afterRequest: Function | null = null
+    private afterRequest: Function | null = null!
     private request: AxiosInstance = null!
 
     constructor(params: ICommonRequestParams = {}) {
@@ -120,5 +113,3 @@ class CommonRequest {
 
     delete () {}
 }
-
-export default CommonRequest

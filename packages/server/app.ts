@@ -3,6 +3,7 @@ import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import server from './websocket-app'
+import cors from 'cors'
 
 // 配置环境变量
 require('dotenv').config({
@@ -18,6 +19,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 配置跨域
+app.use(cors({
+  origin: '*'
+}))
 
 app.use('/', indexRouter);
 
@@ -39,7 +45,7 @@ app.use((err: any, req: any, res: any) => {
 });
 
 // 启动websocket服务
-// server.start()
-//     .then(() => console.warn(`[Websocket] WebSocket Server started at ${process.env.WEBSOCKET_SERVER_PORT}`))
+server.start()
+    .then(() => console.warn(`[Websocket] WebSocket Server started at ${process.env.WEBSOCKET_SERVER_PORT}`))
 
 module.exports = app;

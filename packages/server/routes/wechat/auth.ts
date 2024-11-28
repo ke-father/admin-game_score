@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import { BadRequest } from "http-errors";
 import {successResponse, failureResponse} from "../../utils/response";
-import CommonRequest from "aprnine-utils/dist/request";
+import CommonRequest from "aprnine-utils/src/request";
 import jwt from "jsonwebtoken";
 
 // 获取wechat_session模型

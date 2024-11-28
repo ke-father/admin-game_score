@@ -1,4 +1,4 @@
-import {MyServer} from "./MyServer.ts";
+import {MyServer} from "./MyServer";
 import {WebSocket} from "ws";
 import EventEmitter from "stream";
 
@@ -7,11 +7,11 @@ type IItem = {
     ctx: unknown;
 }
 
-export class Connection extends EventEmitter {
+export class Connection<T> extends EventEmitter {
     // 发布订阅模式
     private messageMap: Map<string, Array<IItem>> = new Map();
 
-    constructor(private server: MyServer, private ws: WebSocket) {
+    constructor(private server: MyServer<T>, private ws: WebSocket) {
         super()
 
         this.ws.on('close', () => {
@@ -56,6 +56,7 @@ export class Connection extends EventEmitter {
             name,
             data
         }
+        console.log('sendMsg', msg)
         const buffer = JSON.stringify(msg)
         this.ws && this.ws.send(buffer)
 
@@ -68,7 +69,7 @@ export class Connection extends EventEmitter {
         // this.ws && this.ws.send(buffer)
     }
 
-    listenMsg (name: string, cb: (connection: Connection, args: any) => void, ctx: unknown) {
+    listenMsg (name: string, cb: (connection: Connection<T>, args: any) => void, ctx: unknown) {
         if (this.messageMap.has(name)) {
             // @ts-ignore
             this.messageMap.get(name).push({cb, ctx})
@@ -77,7 +78,7 @@ export class Connection extends EventEmitter {
         }
     }
 
-    unListerMsg (name: string, cb: (connection: Connection, args: any) => void, ctx: unknown) {
+    unListerMsg (name: string, cb: (connection: Connection<T>, args: any) => void, ctx: unknown) {
         if (this.messageMap.has(name)) {
             // @ts-ignore
             const index = this.messageMap.get(name).findIndex((i) => cb === i.cb && i.ctx === ctx);

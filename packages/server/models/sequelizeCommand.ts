@@ -34,6 +34,12 @@ const command = new Map<string, object>([
         [
             'sequelize model:generate --name Team_member --attributes teamId:integer,name:string'
         ]
+    ],
+    [
+        'User',
+        [
+            'sequelize model:generate --name User --attributes account:string,nickname:string,avatar:string,role:integer'
+        ]
     ]
 ])
 

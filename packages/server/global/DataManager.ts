@@ -1,7 +1,7 @@
-import { Singleton } from 'aprnine-utils/dist/index'
+import Singleton from 'aprnine-utils/src/Singleton'
 
 // 获取Game模型
-// const { Game } = require('../../models')
+const { Game } = require('../models')
 
 export default class DataManager extends Singleton {
     static get Instance() {
