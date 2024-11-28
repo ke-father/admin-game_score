@@ -6,9 +6,14 @@ console.log(window.location.pathname)
 
 if (window.location.pathname === '/') {
     const request = new CommonRequest({ baseUrl: 'http://localhost:4949' })
-    request.post('/main/createGame', { userId:2,
+    request.post<IRequest[WebsocketApi.INIT_GAME]>('/main/createGame', { userId:2,
         playStyleId:1,
-        categoryId:1,
+        teams: [{
+        teamName: '主场队伍',
+        }, {
+        teamName: '客场队伍'
+    }],
+        sectionsNumber: 1,
         gameName:'test' })
         .then((res: any) => {
             openWs(res.data.game)

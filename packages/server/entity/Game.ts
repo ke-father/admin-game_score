@@ -5,8 +5,6 @@ export default class Game {
      creatorId: number = null!
     // 比赛id
      gameId: number = null!
-    // 比赛分类id
-     categoryId: number = null!
     // 比赛方式id
      playStyleId: number = null!
     // 比赛名称

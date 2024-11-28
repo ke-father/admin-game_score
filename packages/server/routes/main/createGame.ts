@@ -15,18 +15,21 @@ interface ICreateGame {
     gameName: string
 }
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     try {
         // 创建用户
-        const { userId, playStyleId, categoryId, gameName } = req.body
+        const { userId, playStyleId, gameName, teams, sectionsNumber } = req.body
 
         // 创建比赛
-        const game = GameManager.Instance.createGame({
+        const game = await GameManager.Instance.createGame({
             creatorId: userId,
             playStyleId,
-            categoryId,
-            gameName
+            gameName,
+            teams,
+            sectionsNumber
         })
+
+        console.log('gameId', game.game.gameId)
 
         successResponse(res, '创建成功', {game})
     } catch (e) {

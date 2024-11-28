@@ -96,7 +96,7 @@ export default class CommonRequest {
         })
     }
 
-    post (url: string, data: object, config: IConfig = {}) {
+    post <T = object> (url: string, data: T, config: IConfig = {}) {
         const postConfig: IConfig = {
             ...config,
             url,
