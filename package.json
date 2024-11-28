@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "scripts": {
+    "start:test:dev": "cd packages/test && npm run dev",
     "start:server": "cd packages/server && npm run start",
     "start:client": "cd packages/client && npm run dev",
     "start:client:server": "cd packages/client && npm run start:nirto",

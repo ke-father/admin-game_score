@@ -1,6 +1,3 @@
-// 时间点
-type ITimePoint = `${number}:${number}`
-
 // 某个时间点详情
 type ITimePointItem = {
     pointsScored: number,
@@ -10,7 +7,7 @@ type ITimePointItem = {
 // 得分记录
 type ITimeRecord = {
     // 得分以时间点为key
-    [key: ITimePoint]: ITimePointItem
+    [key: string]: ITimePointItem
 }
 
 export default class TimeRecord {
@@ -19,5 +16,5 @@ export default class TimeRecord {
     // 犯规记录
     totalFouls: number = 0
     // 得分记录
-    timeRecords: ITimeRecord
+    timeRecords: ITimeRecord = {}
 }

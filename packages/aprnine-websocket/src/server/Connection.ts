@@ -19,15 +19,14 @@ export class Connection<T = string> extends EventEmitter {
             this.emit('close')
         })
 
-        this.ws.on('message', (buffer: string) => {
+        this.ws.on('message', async (buffer: string) => {
             const {name, data } = JSON.parse(buffer)
 
             try {
                 if (this.server.ApiMap.has(name)) {
                     try {
                         const cb = this.server.ApiMap.get(name)
-                        // @ts-ignore
-                        const res = cb.call(null, this, data)
+                        const res = await cb!.call(null, this, data)
                         this.sendMsg(name, {
                             success: true,
                             res
@@ -42,7 +41,9 @@ export class Connection<T = string> extends EventEmitter {
                 } else {
                     if (this.messageMap.has(name)) {
                         // @ts-ignore
-                        this.messageMap.get(name).forEach(({cb, ctx}) => cb.call(ctx, this, data))
+                        for (const {cb, ctx} of this.messageMap.get(name)) {
+                            await cb.call(ctx, this, data);
+                        }
                     }
                 }
             } catch (e) {

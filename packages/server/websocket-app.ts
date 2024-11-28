@@ -4,6 +4,9 @@ import DataManager from "./global/DataManager";
 import path from "path";
 import {WebsocketApi} from "./types/websocket-enum";
 import websocketEvent from './websocket'
+import UserManager from "./entity/UserManager";
+import GameManager from "./entity/GameManager";
+import TeamManager from "./entity/TeamManager";
 
 // 配置环境变量
 require('dotenv').config({
@@ -24,6 +27,14 @@ server.on(MyServer.connection, () => {
 // 有人走
 server.on(MyServer.disconnection, () => {
     console.log('disconnection：走人了')
+    // UserManager.Instance.idMapUsers.clear()
+    // UserManager.Instance.users.clear()
+    // GameManager.Instance.idMapGames.clear()
+    // GameManager.Instance.games.clear()
+    // GameManager.Instance.gameIdMapUsers.clear()
+    // TeamManager.Instance.teams.clear()
+    // TeamManager.Instance.idMapTeams.clear()
+    // TeamManager.Instance.gameIdMapTeams.clear()
 })
 
 websocketEvent(server)

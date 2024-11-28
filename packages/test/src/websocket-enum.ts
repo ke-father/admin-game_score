@@ -4,13 +4,11 @@ export enum WebsocketApi {
     // 加入比赛
     JOIN_GAME = 'join_game',
     // 更新比赛信息
-    UPDATE_GAME_INFO_CLIENT = 'update_game_info_client',
-    // 更新比赛信息
+    UPDATE_GAME_INFO = 'update_game_info',
     UPDATE_GAME_INFO_SERVER = 'update_game_info_server',
     // 更新比赛得分
-    UPDATE_TEAM_DATA_CLIENT = 'update_game_score_client',
-    // 更新比赛得分
-    UPDATE_TEAM_DATA_SERVER = 'update_game_score_server',
+    UPDATE_TEAM_DATA = 'update_team_data',
+    UPDATE_TEAM_DATA_SERVER = 'update_team_data_server'
 }
 
 export interface IRequest {
@@ -27,11 +25,12 @@ export interface IRequest {
         userId: number,
         gameId: number
     }
-    [WebsocketApi.UPDATE_GAME_INFO_CLIENT]: {
+    [WebsocketApi.UPDATE_GAME_INFO]: {
         userId: number,
-        gameId: number
+        gameId: number,
+        gameInfo: any
     },
-    [WebsocketApi.UPDATE_TEAM_DATA_CLIENT]: {
+    [WebsocketApi.UPDATE_TEAM_DATA]: {
         userId: number,
         gameId: number,
         teamId: number,
@@ -46,7 +45,7 @@ export interface IRequest {
 }
 
 export interface IResponse {
-    [WebsocketApi.UPDATE_GAME_INFO_SERVER]: {}
+    [WebsocketApi.UPDATE_GAME_INFO]: any
 }
 
 

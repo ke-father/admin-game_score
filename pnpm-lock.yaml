@@ -104,12 +104,6 @@ importers:
       ant-design-vue:
         specifier: ^4.2.6
         version: 4.2.6(vue@3.5.13(typescript@5.5.4))
-      aprnine-utils:
-        specifier: workspace:*
-        version: link:../aprnine-utils
-      aprnine-websocket:
-        specifier: workspace:*
-        version: link:../aprnine-websocket
       axios:
         specifier: ^1.7.7
         version: 1.7.7

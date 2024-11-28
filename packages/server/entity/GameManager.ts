@@ -33,10 +33,11 @@ export default class GameManager extends Singleton{
         return super.GetInstance<GameManager>()
     }
 
-    async createGame <T = object> (params: ICreateGame): Promise<{game: Game, teams: Team[]}> {
+    async createGame <T = object> (params: ICreateGame): Promise<Game &{ teams: Team[]}> {
         return new Promise(async (resolve, reject) => {
             try {
-                const id = generate10DigitId()
+                // const id = generate10DigitId()
+                const id = 1
                 if (this.idMapGames.has(id)) return this.createGame(params)
                 const { creatorId, playStyleId, gameName, teams, sectionsNumber } = params
 
@@ -58,9 +59,10 @@ export default class GameManager extends Singleton{
                 })
 
                 console.log('gameInstance', gameInstance)
+                console.log('teamsInstance', teamsInstance)
 
                 resolve({
-                    game: gameInstance,
+                    ...gameInstance,
                     teams: teamsInstance
                 })
             } catch (e) {
@@ -86,6 +88,13 @@ export default class GameManager extends Singleton{
         for (const user of this.gameIdMapUsers.get(game.gameId) as User[]) {
             // 每一个用户关注比赛的用户内容更新
             user.connection.sendMsg(WebsocketApi.UPDATE_GAME_INFO_SERVER, params)
+        }
+    }
+
+    syncTeamDataInfo (gameId: number, team: Team) {
+        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
+            // 每一个用户关注比赛的用户内容更新
+            user.connection.sendMsg(WebsocketApi.UPDATE_TEAM_DATA_SERVER, team)
         }
     }
 

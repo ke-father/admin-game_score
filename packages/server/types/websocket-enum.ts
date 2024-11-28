@@ -6,13 +6,17 @@ export enum WebsocketApi {
     // 加入比赛
     JOIN_GAME = 'join_game',
     // 更新比赛信息
-    UPDATE_GAME_INFO_CLIENT = 'update_game_info_client',
-    // 更新比赛信息
+    UPDATE_GAME_INFO = 'update_game_info',
     UPDATE_GAME_INFO_SERVER = 'update_game_info_server',
-    // 更新比赛得分
-    UPDATE_TEAM_DATA_CLIENT = 'update_game_score_client',
-    // 更新比赛得分
-    UPDATE_TEAM_DATA_SERVER = 'update_game_score_server',
+    // 更新队伍数据
+    UPDATE_TEAM_DATA = 'update_team_data',
+    UPDATE_TEAM_DATA_SERVER = 'update_team_data_server',
+    // 比赛开始
+    START_GAME = 'start_game',
+    // 比赛暂停
+    PAUSE_GAME = 'pause_game',
+    // 比赛结束
+    END_GAME = 'end_game'
 }
 
 export interface IRequest {
@@ -29,12 +33,12 @@ export interface IRequest {
         userId: number,
         gameId: number
     }
-    [WebsocketApi.UPDATE_GAME_INFO_CLIENT]: {
+    [WebsocketApi.UPDATE_GAME_INFO]: {
         userId: number,
         gameId: number,
         gameInfo: Game
     },
-    [WebsocketApi.UPDATE_TEAM_DATA_CLIENT]: {
+    [WebsocketApi.UPDATE_TEAM_DATA]: {
         userId: number,
         gameId: number,
         teamId: number,
@@ -46,10 +50,22 @@ export interface IRequest {
         periods: number,
 
     }
+    [WebsocketApi.START_GAME]: {
+        userId: number,
+        gameId: number
+    }
+    [WebsocketApi.PAUSE_GAME]: {
+        userId: number,
+        gameId: number
+    }
+    [WebsocketApi.END_GAME]: {
+        userId: number,
+        gameId: number
+    }
 }
 
 export interface IResponse {
-    [WebsocketApi.UPDATE_GAME_INFO_SERVER]: Game
+    [WebsocketApi.UPDATE_GAME_INFO]: Game
 }
 
 

@@ -6,6 +6,7 @@ import GameManager from "../entity/GameManager";
 import UserManager from "../entity/UserManager";
 import {BadRequest, Unauthorized} from "http-errors";
 import TeamManager from "../entity/TeamManager";
+import Team from "../entity/Team";
 const {} = require('../models')
 
 export default function (websocketApp: MyServer) {
@@ -55,7 +56,7 @@ export default function (websocketApp: MyServer) {
     })
 
     // 更新比赛信息
-    websocketApp.setApi<IRequest[WebsocketApi.UPDATE_GAME_INFO_CLIENT]>(WebsocketApi.UPDATE_GAME_INFO_CLIENT, (connection: Connection<WebsocketApi>, args) => {
+    websocketApp.setApi<IRequest[WebsocketApi.UPDATE_GAME_INFO]>(WebsocketApi.UPDATE_GAME_INFO, (connection: Connection<WebsocketApi>, args) => {
         const { userId, gameId, gameInfo } = args
         if (!userId || !gameId) throw new BadRequest('请传入用户ID和比赛ID')
         // 判断当前用户是否为比赛创建者
@@ -65,25 +66,33 @@ export default function (websocketApp: MyServer) {
         // 更新内容
         game.gameName = gameInfo?.gameName
 
-        // 更新所有关注该比赛的用户
         GameManager.Instance.syncGameInfo(game)
 
-        return game
+        return {
+            ...game,
+            teams: TeamManager.Instance.gameIdMapTeams.get(game.gameId)
+        }
     })
 
     // 更新比赛得分
-    websocketApp.setApi<IRequest[WebsocketApi.UPDATE_TEAM_DATA_CLIENT]>(WebsocketApi.UPDATE_GAME_INFO_CLIENT, (connection: Connection<WebsocketApi>, args) => {
-        const {userId, gameId} = args
-        if (!userId || !gameId) throw new BadRequest('请传入用户ID和比赛ID')
-        // 判断当前用户是否为比赛创建者
-        const game = GameManager.Instance.idMapGames.get(gameId)
-        if (!game || game.creatorId !== userId) throw new Unauthorized('当前用户不可更改比赛信息')
+    websocketApp.setApi<IRequest[WebsocketApi.UPDATE_TEAM_DATA]>(WebsocketApi.UPDATE_TEAM_DATA,  (connection: Connection<WebsocketApi>, args) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const {userId, gameId} = args
+                if (!userId || !gameId) throw new BadRequest('请传入用户ID和比赛ID')
+                // 判断当前用户是否为比赛创建者
+                const game = GameManager.Instance.idMapGames.get(gameId)
+                if (!game || game.creatorId !== userId) throw new Unauthorized('当前用户不可更改比赛信息')
 
-        // 更新数据
-        const team = TeamManager.Instance.updateTeamData(gameId, args)
-        // 更新所有关注该比赛的用户
-        GameManager.Instance.syncGameInfo(game)
-        return team
+                // 更新数据
+                const team = await TeamManager.Instance.updateTeamData(gameId, args)
+                // 更新所有关注该比赛的用户
+                GameManager.Instance.syncTeamDataInfo(gameId, team as Team)
+                resolve(team)
+            } catch (e) {
+                reject(e)
+            }
+        })
     })
 
 

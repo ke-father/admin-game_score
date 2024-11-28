@@ -2,6 +2,7 @@ import Singleton from 'aprnine-utils/src/Singleton'
 import Team, { ITeamParams } from "./Team";
 import { generate10DigitId } from '../utils/format'
 import {IRequest, WebsocketApi} from "../types/websocket-enum";
+import {NotFound} from "http-errors";
 
 export type ICreateTeamItem = {
     teamName: string
@@ -15,7 +16,7 @@ export default class TeamManager extends Singleton{
     // 存入的所有队伍
     teams: Set<Team> = new Set()
     // id与队伍map
-    idMapTeams: Map<number, Team> = new Map()
+    idMapTeams: Map<string | number, Team> = new Map()
     // 比赛id与队伍map
     gameIdMapTeams: Map<number, Team[]> = new Map()
 
@@ -27,20 +28,21 @@ export default class TeamManager extends Singleton{
     createTeams<T = any[]> (params: ICreateTeam): Promise<Team[]> {
         return new Promise((resolve, reject) => {
             const { gameId, teams, sectionsNumber } = params
-            resolve(teams.map(team => this.createTeam(gameId, team, sectionsNumber)))
+            resolve(teams.map((team, index) => this.createTeam(gameId, team, sectionsNumber, index)))
         })
     }
 
-    createTeam (gameId: number, teamItem: ICreateTeamItem, sectionsNumber: number) {
+    createTeam (gameId: number, teamItem: ICreateTeamItem, sectionsNumber: number, index: number) {
         // 创建10位数id
-        const id = generate10DigitId()
-        if (this.idMapTeams.has(id)) return this.createTeam(gameId, teamItem, sectionsNumber)
+        // const id = generate10DigitId()
+        const id = index ? 10086 : 10000
+        if (this.idMapTeams.has(id)) return this.createTeam(gameId, teamItem, sectionsNumber, index)
 
         // 规整参数
         const teamParams = {
             sectionsNumber,
             gameId,
-            teamName: teamItem.teamName,
+            name: teamItem.teamName,
             id
         }
         const team = new Team(teamParams)
@@ -55,19 +57,25 @@ export default class TeamManager extends Singleton{
         return team
     }
 
-    updateTeamData (gameId: number, args: IRequest[WebsocketApi.UPDATE_TEAM_DATA_CLIENT]) {
-        const { teamId, score, periods, time, foul } = args
-        const team = this.idMapTeams.get(teamId)
-        if (!team) return
-        // 得分是累计
-        team.score += args.score
-        team.scoreDetail[periods].totalFouls += Number(foul)
-        team.scoreDetail[periods].totalPointsScored += Number(score)
-        team.scoreDetail[periods].timeRecords[time] = {
-            pointScored: Number(score),
-            fouls: foul
-        }
+    updateTeamData (gameId: number, args: IRequest[WebsocketApi.UPDATE_TEAM_DATA]) {
+        return new Promise((resolve, reject) => {
+           try {
+               const { teamId, score, periods, time, foul } = args
+               const team = this.idMapTeams.get(teamId)
+               if (!team) throw new NotFound('队伍不存在')
+               // 得分是累计
+               team.score += args.score
+               team.scoreDetail[periods].totalFouls += Number(foul)
+               team.scoreDetail[periods].totalPointsScored += Number(score)
+               team.scoreDetail[periods].timeRecords[String(time)] = {
+                   pointsScored: Number(score),
+                   fouls: foul
+               }
 
-        return team
+               resolve(team)
+           } catch (e) {
+               reject(e)
+           }
+        })
     }
 }

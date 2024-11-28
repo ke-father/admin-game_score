@@ -1,5 +1,5 @@
 import TimeRecord from "./TimeRecord";
-import {BadRequest} from "http-errors";
+import {NotFound} from "http-errors";
 
 export type ITeamParams = Team & {
     // 一共存在几节
@@ -23,7 +23,8 @@ export default class Team {
     members?: number[] = null!
 
     constructor(params: ITeamParams) {
-        if (!params.gameId) throw new BadRequest('比赛id不存在')
+        if (!params.gameId) throw new NotFound('比赛id不存在')
+        this.id = params.id
         this.gameId = params.gameId
         this.name = params.name
         this.teamMark = params.teamMark
