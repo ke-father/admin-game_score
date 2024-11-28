@@ -78,4 +78,14 @@ export default class TeamManager extends Singleton{
            }
         })
     }
+
+    deleteGameTeams (gameId: number) {
+        const teams = this.gameIdMapTeams.get(gameId)
+        if (!teams) return
+        teams.forEach(team => {
+            this.teams.delete(team)
+            this.idMapTeams.delete(team.id)
+        })
+        this.gameIdMapTeams.delete(gameId)
+    }
 }

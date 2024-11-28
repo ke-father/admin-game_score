@@ -21,20 +21,13 @@ const server = new MyServer<WebsocketApi>({
 
 // 有人链接
 server.on(MyServer.connection, () => {
-    console.log('connection：来人了')
+    console.log('connection：来人了', server.connections.size)
 })
 
 // 有人走
-server.on(MyServer.disconnection, () => {
+server.on(MyServer.disconnection, (connection) => {
     console.log('disconnection：走人了')
-    // UserManager.Instance.idMapUsers.clear()
-    // UserManager.Instance.users.clear()
-    // GameManager.Instance.idMapGames.clear()
-    // GameManager.Instance.games.clear()
-    // GameManager.Instance.gameIdMapUsers.clear()
-    // TeamManager.Instance.teams.clear()
-    // TeamManager.Instance.idMapTeams.clear()
-    // TeamManager.Instance.gameIdMapTeams.clear()
+    if (connection.userId) UserManager.Instance.removeUser(connection.userId)
 })
 
 websocketEvent(server)

@@ -91,6 +91,7 @@ export default class GameManager extends Singleton{
         }
     }
 
+    // 更新队伍信息
     syncTeamDataInfo (gameId: number, team: Team) {
         for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
             // 每一个用户关注比赛的用户内容更新
@@ -98,5 +99,22 @@ export default class GameManager extends Singleton{
         }
     }
 
-    // 更新比赛得分
+    leaveGame (userId: number, gameId: number) {
+        // 获取所有用户
+        const users = this.gameIdMapUsers.get(gameId)
+        if (!users) return
+        // 更新关注比赛的用户列表
+        const filterUsers = users?.filter(user => user.id !== userId)
+        // 如果没有用户了则删除比赛
+        if (!filterUsers?.length) {
+            const game = this.idMapGames.get(gameId)
+            this.games.delete(game)
+            this.gameIdMapUsers.delete(gameId)
+            this.idMapGames.delete(gameId)
+            // 删除队伍
+            TeamManager.Instance.deleteGameTeams(gameId)
+            return
+        }
+        this.gameIdMapUsers.set(gameId, filterUsers)
+    }
 }

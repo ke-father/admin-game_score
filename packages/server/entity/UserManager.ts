@@ -1,9 +1,11 @@
 // @ts-ignore
-import { Connection } from 'aprnine-websocket/server'
+import {Connection} from 'aprnine-websocket/server'
 import User from './User'
 import Singleton from 'aprnine-utils/src/Singleton'
 import {WebsocketApi} from "../types/websocket-enum";
-const { User: UserModel } = require('../models')
+import GameManager from "./GameManager";
+
+const {User: UserModel} = require('../models')
 
 type ICreateUser = {
     user: Omit<User, 'connection'>
@@ -26,7 +28,7 @@ export default class UserManager extends Singleton {
      * @param user 用户信息
      * @param connection websocket链接实例
      */
-    createUser ({ user, connection }: ICreateUser) {
+    createUser({user, connection}: ICreateUser) {
         // 查找用户
         const userInstance = new User(user, connection)
         this.users.add(userInstance)
@@ -35,4 +37,14 @@ export default class UserManager extends Singleton {
     }
 
 
+    removeUser(userId: number) {
+        const user = this.idMapUsers.get(userId)
+        // 查找用户
+        if (!user) return
+        // 离开比赛
+        GameManager.Instance.leaveGame(userId, user.gameId)
+        this.users.delete(user)
+        this.idMapUsers.delete(userId)
+
+    }
 }
