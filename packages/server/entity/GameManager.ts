@@ -34,7 +34,7 @@ export default class GameManager extends Singleton{
         return super.GetInstance<GameManager>()
     }
 
-    async createGame <T = object> (params: ICreateGame): Promise<Game &{ teams: Team[]}> {
+    async createGame <T = object> (params: ICreateGame) {
         return new Promise(async (resolve, reject) => {
             try {
                 // const id = generate10DigitId()
@@ -80,78 +80,61 @@ export default class GameManager extends Singleton{
     }
 
     // 针对关注比赛的用户更新比赛信息
-    syncGameInfo (game: Game) {
-        const params = {
-            ...game,
-            teams: TeamManager.Instance.gameIdMapTeams.get(game.gameId)
+    // syncGameInfo (game: Game) {
+    //     const params = {
+    //         ...game,
+    //         teams: TeamManager.Instance.gameIdMapTeams.get(game.gameId)
+    //     }
+    //
+    //     for (const user of this.gameIdMapUsers.get(game.gameId) as User[]) {
+    //         // 每一个用户关注比赛的用户内容更新
+    //         user.connection.sendMsg(WebsocketApi.UPDATE_GAME_INFO, params)
+    //     }
+    // }
+
+    // 更新队伍信息 —— 得分或犯规
+    syncTeamDataInfo (gameId: number,data: any) {
+        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
+            // 每一个用户关注比赛的用户内容更新
+            user.connection.sendMsg(WebsocketApi.UPDATE_TEAM_DATA, data)
         }
+    }
+
+    // 更新比赛数据——时间
+    syncGameTime (gameId: number, time: number) {
+        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
+            // 每一个用户关注比赛的用户内容更新
+            user.connection.sendMsg(WebsocketApi.SYNC_GAME_TIME, {
+                time
+            })
+        }
+    }
+
+    // 更新比赛数据——暂停时间
+    syncGamePause (gameId: number, time: number, teamId?: number) {
+        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
+            // 每一个用户关注比赛的用户内容更新
+            user.connection.sendMsg(WebsocketApi.PAUSE_GAME, {
+                time,
+                teamId
+            })
+        }
+    }
+
+    // 结束比赛
+    syncUsersEndGame (game: Game) {
+        const teams = TeamManager.Instance.gameIdMapTeams.get(game.gameId)
 
         for (const user of this.gameIdMapUsers.get(game.gameId) as User[]) {
             // 每一个用户关注比赛的用户内容更新
-            user.connection.sendMsg(WebsocketApi.UPDATE_GAME_INFO_SERVER, params)
-        }
-    }
-
-    // 更新队伍信息
-    syncTeamDataInfo (gameId: number, team: Team) {
-        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
-            // 每一个用户关注比赛的用户内容更新
-            user.connection.sendMsg(WebsocketApi.UPDATE_TEAM_DATA_SERVER, team)
-        }
-    }
-
-    // 更新比赛数据——得分
-    syncGameDataInfo (gameId: number, date: number) {
-        const teams = TeamManager.Instance.gameIdMapTeams.get(gameId)
-        if (!teams.length) throw new NotFound('比赛不存在')
-        const gameData = {
-            date,
-            teams: teams.map(team => ({score: team.score}))
-        }
-        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
-            // 每一个用户关注比赛的用户内容更新
-            user.connection.sendMsg(WebsocketApi.UPDATE_TEAM_DATA_SERVER, gameData)
-        }
-    }
-
-    syncGamePause (gameId: number, date: number, teamId?: number) {
-        let team = null
-        if (teamId) {
-            team = TeamManager.Instance.idMapTeams.get(teamId)
+            user.connection.sendMsg(WebsocketApi.END_GAME, {
+                ...game,
+                teams
+            })
         }
 
-        const responseData: {date: number, team?: { id: number; teamName: string; score: number; }} = {
-            date,
-        }
-
-        team && (responseData.team = {
-            id: team.id,
-            teamName: team.name,
-            score: team.score
-        })
-
-        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
-            // 每一个用户关注比赛的用户内容更新
-            user.connection.sendMsg(WebsocketApi.PAUSE_GAME_SERVER, responseData)
-        }
-    }
-
-    leaveGame (userId: number, gameId: number) {
-        // 获取所有用户
-        const users = this.gameIdMapUsers.get(gameId)
-        if (!users) return
-        // 更新关注比赛的用户列表
-        const filterUsers = users?.filter(user => user.id !== userId)
-        // 如果没有用户了则删除比赛
-        if (!filterUsers?.length) {
-            const game = this.idMapGames.get(gameId)
-            this.games.delete(game)
-            this.gameIdMapUsers.delete(gameId)
-            this.idMapGames.delete(gameId)
-            // 删除队伍
-            TeamManager.Instance.deleteGameTeams(gameId)
-            return
-        }
-        this.gameIdMapUsers.set(gameId, filterUsers)
+        this.games.delete(game)
+        this.idMapGames.delete(game.gameId)
+        this.gameIdMapUsers.delete(game.gameId)
     }
 }

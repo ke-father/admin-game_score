@@ -10,20 +10,24 @@ export enum WebsocketApi {
     UPDATE_GAME_INFO_SERVER = 'update_game_info_server',
     // 更新队伍数据
     UPDATE_TEAM_DATA = 'update_team_data',
-    UPDATE_TEAM_DATA_SERVER = 'update_team_data_server',
+    // 同步比赛时间
+    SYNC_GAME_TIME = 'sync_game_time',
     // 比赛开始
     START_GAME = 'start_game',
     // 比赛暂停
     PAUSE_GAME = 'pause_game',
-    PAUSE_GAME_SERVER = 'pause_game_server',
-    // 队伍比赛暂停
-    PAUSE_GAME_BY_TEAM = 'pause_game_by_team',
     // 比赛结束
     END_GAME = 'end_game',
     // 离开比赛
     LEAVE_GAME = 'leave_game',
-    // 实时更新
-    UPDATE_GAME_DATA_NOW_SERVER = 'update_game_data_now_server'
+    // 获取比赛信息
+    GET_GAME_INFO = 'get_game_info',
+    // 获取比赛得分信息
+    GET_GAME_SCORE_INFO = 'get_game_score_info_list',
+    // 获取队伍信息
+    GET_TEAM_INFO = 'get_team_info',
+    // 获取时间轴数据
+    GET_TIME_LINE_DATA = 'get_time_line_data'
 }
 
 type IControlGame = {
@@ -56,10 +60,6 @@ export interface IRequest {
         teamId: number,
         score?: number,
         foul?: boolean,
-        // 时间以戳的形式传递
-        time: number,
-        // 第几节
-        periods: number,
 
     }
     [WebsocketApi.START_GAME]: IControlGame
@@ -68,6 +68,9 @@ export interface IRequest {
     }
     [WebsocketApi.END_GAME]: IControlGame
     [WebsocketApi.LEAVE_GAME]: IControlGame
+    [WebsocketApi.GET_GAME_SCORE_INFO]: {
+        gameId: number
+    }
 }
 
 export interface IResponse {

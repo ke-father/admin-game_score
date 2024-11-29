@@ -16,7 +16,7 @@ export default class TeamManager extends Singleton{
     // 存入的所有队伍
     teams: Set<Team> = new Set()
     // id与队伍map
-    idMapTeams: Map<string | number, Team> = new Map()
+    idMapTeams: Map<number, Team> = new Map()
     // 比赛id与队伍map
     gameIdMapTeams: Map<number, Team[]> = new Map()
 
@@ -55,46 +55,5 @@ export default class TeamManager extends Singleton{
         }
 
         return team
-    }
-
-    updateTeamData (gameId: number, args: IRequest[WebsocketApi.UPDATE_TEAM_DATA]) {
-        return new Promise((resolve, reject) => {
-           try {
-               const { teamId, score, periods, time, foul } = args
-               const team = this.idMapTeams.get(teamId)
-               if (!team) throw new NotFound('队伍不存在')
-               // 得分是累计
-               team.score += args.score
-               team.scoreDetail[periods].totalFouls += Number(foul)
-               team.scoreDetail[periods].totalPointsScored += Number(score)
-               team.scoreDetail[periods].timeRecords[String(time)] = {
-                   pointsScored: Number(score),
-                   fouls: foul
-               }
-
-               resolve(team)
-           } catch (e) {
-               reject(e)
-           }
-        })
-    }
-
-    handleTeamPause (gameId, teamId, gameTime) {
-        const teams = this.gameIdMapTeams.get(gameId)
-        if (!teams.length) throw new NotFound('比赛不存在')
-        const team = teams.find(team => team.id === teamId)
-        if (!team) throw new NotFound('队伍不存在')
-
-        team.pause(gameId, gameTime)
-    }
-
-    deleteGameTeams (gameId: number) {
-        const teams = this.gameIdMapTeams.get(gameId)
-        if (!teams) return
-        teams.forEach(team => {
-            this.teams.delete(team)
-            this.idMapTeams.delete(team.id)
-        })
-        this.gameIdMapTeams.delete(gameId)
     }
 }
