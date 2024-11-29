@@ -79,6 +79,15 @@ export default class TeamManager extends Singleton{
         })
     }
 
+    handleTeamPause (gameId, teamId, gameTime) {
+        const teams = this.gameIdMapTeams.get(gameId)
+        if (!teams.length) throw new NotFound('比赛不存在')
+        const team = teams.find(team => team.id === teamId)
+        if (!team) throw new NotFound('队伍不存在')
+
+        team.pause(gameId, gameTime)
+    }
+
     deleteGameTeams (gameId: number) {
         const teams = this.gameIdMapTeams.get(gameId)
         if (!teams) return

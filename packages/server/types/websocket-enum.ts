@@ -15,8 +15,20 @@ export enum WebsocketApi {
     START_GAME = 'start_game',
     // 比赛暂停
     PAUSE_GAME = 'pause_game',
+    PAUSE_GAME_SERVER = 'pause_game_server',
+    // 队伍比赛暂停
+    PAUSE_GAME_BY_TEAM = 'pause_game_by_team',
     // 比赛结束
-    END_GAME = 'end_game'
+    END_GAME = 'end_game',
+    // 离开比赛
+    LEAVE_GAME = 'leave_game',
+    // 实时更新
+    UPDATE_GAME_DATA_NOW_SERVER = 'update_game_data_now_server'
+}
+
+type IControlGame = {
+    userId: number,
+    gameId: number
 }
 
 export interface IRequest {
@@ -50,18 +62,12 @@ export interface IRequest {
         periods: number,
 
     }
-    [WebsocketApi.START_GAME]: {
-        userId: number,
-        gameId: number
+    [WebsocketApi.START_GAME]: IControlGame
+    [WebsocketApi.PAUSE_GAME]: IControlGame & {
+        teamId?: number
     }
-    [WebsocketApi.PAUSE_GAME]: {
-        userId: number,
-        gameId: number
-    }
-    [WebsocketApi.END_GAME]: {
-        userId: number,
-        gameId: number
-    }
+    [WebsocketApi.END_GAME]: IControlGame
+    [WebsocketApi.LEAVE_GAME]: IControlGame
 }
 
 export interface IResponse {

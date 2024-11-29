@@ -1,7 +1,8 @@
 // 某个时间点详情
 type ITimePointItem = {
     pointsScored: number,
-    fouls: boolean
+    fouls: boolean,
+    pauses?: boolean
 }
 
 // 得分记录
@@ -15,6 +16,8 @@ export default class TimeRecord {
     totalPointsScored: number = 0
     // 犯规记录
     totalFouls: number = 0
+    // 暂停记录
+    totalPauses: number = 0
     // 得分记录
     timeRecords: ITimeRecord = {}
 }

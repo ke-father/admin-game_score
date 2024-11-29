@@ -19,6 +19,8 @@ export default class Game {
      createdAt?: number = null!
     // 更新时间
      updatedAt?: number = null!
+    // 当前比赛节数
+     currentRound?: number = 0
     // 队伍数据
      teamMap?: Map<number, TeamManager> = new Map();
 

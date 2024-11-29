@@ -1,7 +1,8 @@
 import TimeRecord from "./TimeRecord";
 import {NotFound} from "http-errors";
+import GameManager from "./GameManager";
 
-export type ITeamParams = Team & {
+export type ITeamParams = Omit<Team, 'pause'> & {
     // 一共存在几节
     sectionsNumber: number
 }
@@ -32,5 +33,11 @@ export default class Team {
         for (let i = 0; i < params.sectionsNumber; i++) {
             this.scoreDetail.push(new TimeRecord())
         }
+    }
+
+    pause(gameId, date) {
+        const game = GameManager.Instance.idMapGames.get(gameId)
+        this.scoreDetail[game.currentRound - 1].totalPauses++
+        this.scoreDetail[game.currentRound - 1].timeRecords[date].pauses = true
     }
 }

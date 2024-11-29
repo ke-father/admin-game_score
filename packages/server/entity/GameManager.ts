@@ -7,6 +7,7 @@ import {WebsocketApi} from "../types/websocket-enum";
 import {generate10DigitId} from "../utils/format";
 import {ICreateTeamItem} from "./TeamManager";
 import Team from "./Team";
+import {NotFound} from "http-errors";
 
 interface ICreateGame {
     // 创建者id
@@ -96,6 +97,42 @@ export default class GameManager extends Singleton{
         for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
             // 每一个用户关注比赛的用户内容更新
             user.connection.sendMsg(WebsocketApi.UPDATE_TEAM_DATA_SERVER, team)
+        }
+    }
+
+    // 更新比赛数据——得分
+    syncGameDataInfo (gameId: number, date: number) {
+        const teams = TeamManager.Instance.gameIdMapTeams.get(gameId)
+        if (!teams.length) throw new NotFound('比赛不存在')
+        const gameData = {
+            date,
+            teams: teams.map(team => ({score: team.score}))
+        }
+        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
+            // 每一个用户关注比赛的用户内容更新
+            user.connection.sendMsg(WebsocketApi.UPDATE_TEAM_DATA_SERVER, gameData)
+        }
+    }
+
+    syncGamePause (gameId: number, date: number, teamId?: number) {
+        let team = null
+        if (teamId) {
+            team = TeamManager.Instance.idMapTeams.get(teamId)
+        }
+
+        const responseData: {date: number, team?: { id: number; teamName: string; score: number; }} = {
+            date,
+        }
+
+        team && (responseData.team = {
+            id: team.id,
+            teamName: team.name,
+            score: team.score
+        })
+
+        for (const user of this.gameIdMapUsers.get(gameId) as User[]) {
+            // 每一个用户关注比赛的用户内容更新
+            user.connection.sendMsg(WebsocketApi.PAUSE_GAME_SERVER, responseData)
         }
     }
 
