@@ -41,7 +41,9 @@
     "pinia": "^2.2.6",
     "vue": "^3.5.12",
     "vue-i18n": "^9.14.1",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "aprnine-utils": "workspace:*",
+    "aprnine-websocket": "workspace:*"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.27.3",
