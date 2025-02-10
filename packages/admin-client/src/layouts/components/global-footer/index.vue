@@ -25,5 +25,5 @@ const prefixCls = shallowRef('ant-pro-global-footer')
 </template>
 
 <style lang="less">
-@import "index";
+@use "index";
 </style>

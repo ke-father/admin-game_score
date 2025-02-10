@@ -1,0 +1,17 @@
+.status {
+  &-list {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &-item {
+    height: 100%;
+    width: 6px;
+    background: #2eabff;
+  }
+}

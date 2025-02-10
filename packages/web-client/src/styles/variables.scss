@@ -1,0 +1,44 @@
+// 颜色变量
+$primary-color: #1890ff;
+$primary-gradient: linear-gradient(90deg, #ff85c0, #8080ff);
+$primary-gradient-hover: linear-gradient(90deg, #ff99c9, #9999ff);
+$background-gradient: linear-gradient(125deg, #fef5f9 0%, #f0f1ff 100%);
+
+$text-color: #333;
+$text-secondary: #666;
+$text-light: #999;
+
+$border-color: #d9d9d9;
+$border-light: #e8e8e8;
+
+$white: #fff;
+$success: #07c160;
+
+// 尺寸变量
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+$padding-layout: 32px;
+
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+
+// 阴影
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+// 断点
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// 字体大小
+$font-size-sm: 12px;
+$font-size-base: 14px;
+$font-size-md: 16px;
+$font-size-lg: 20px;
+$font-size-xl: 24px;

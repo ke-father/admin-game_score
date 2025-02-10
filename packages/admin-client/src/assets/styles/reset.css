@@ -1,4 +1,4 @@
-@import "./motion.css";
+@use "./motion.css";
 html {
   --text-color: rgba(0,0,0,.85);
   --text-color-1: rgba(0,0,0,.45);

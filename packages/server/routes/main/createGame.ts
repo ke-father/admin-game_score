@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
             sectionsNumber
         })
 
-        console.log('gameId', game.gameId)
+        // console.log('gameId', game.gameId)
 
         successResponse(res, '创建成功', {game})
     } catch (e) {

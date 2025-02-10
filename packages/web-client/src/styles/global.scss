@@ -1,0 +1,82 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+:root {
+  --primary-color: #{$primary-color};
+  --text-color: #{$text-color};
+  --bg-color: #{$background-gradient};
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+}
+
+// 全局滚动条样式
+* {
+  // Firefox
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+
+  // Chrome, Safari, Edge
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  // 隐藏滚动条但保持可滚动
+  &.hide-scrollbar {
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
+    
+    &::-webkit-scrollbar {
+      display: none; // Chrome, Safari, Opera
+    }
+  }
+}
+
+// 可滚动容器
+.scrollable {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; // 增加 iOS 滚动流畅度
+
+  &.vertical {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  &.horizontal {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}

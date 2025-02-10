@@ -79,5 +79,5 @@ const contentCls = computed(() => {
 </template>
 
 <style lang="less">
-@import './index.less';
+@use './index.less';
 </style>

@@ -30,7 +30,7 @@ const barWidth = computed(() => {
 </template>
 
 <style scoped lang="less">
-@import "./index.less";
+@use "./index.less";
 
 .footer-tool-bar__left {
   float: left;

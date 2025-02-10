@@ -42,7 +42,7 @@ export default class UserManager extends Singleton {
         // 查找用户
         if (!user) return
         // 离开比赛
-        GameManager.Instance.leaveGame(userId, user.gameId)
+        // GameManager.Instance.leaveGame(userId, user.gameId)
         this.users.delete(user)
         this.idMapUsers.delete(userId)
 

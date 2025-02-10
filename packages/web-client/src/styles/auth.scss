@@ -1,0 +1,312 @@
+@use 'variables';
+@use 'mixins';
+
+.auth-page {
+  height: 100%;
+  @include flex-center;
+  background: $background-gradient;
+  overflow: hidden;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  max-height: 100%;
+  padding: $spacing-lg;
+}
+
+.auth-form {
+  background: $white;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+
+  .ant-tabs {
+    &-nav {
+      margin-bottom: $spacing-lg;
+    }
+
+    &-tab {
+      font-size: $font-size-md;
+      padding: $spacing-sm 0;
+      min-width: 100px;
+      @include transition-base;
+
+      &:hover {
+        color: #ff85c0;
+      }
+
+      &.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: #ff85c0;
+        font-weight: 500;
+      }
+    }
+
+    &-ink-bar {
+      background: #ff85c0;
+    }
+
+    &-content {
+      display: flex;
+      align-items: center;
+    }
+
+    &-tabpane {
+      flex: 1;
+    }
+  }
+}
+
+// 输入框样式
+.auth-input {
+  height: 48px;
+  border-radius: $border-radius-sm;
+  @include transition-base;
+  font-size: $font-size-base;
+
+  &:hover,
+  &:focus {
+    border-color: #ff85c0;
+    box-shadow: 0 0 0 2px rgba(255, 133, 192, 0.1);
+  }
+}
+
+.auth-input-icon {
+  color: #bfbfbf;
+  @include transition-base;
+}
+
+// 选项区域样式
+.auth-options {
+  @include flex-between;
+  margin-bottom: $spacing-lg;
+  font-size: $font-size-base;
+}
+
+.auth-checkbox {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  color: $text-secondary;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #ff85c0;
+  }
+}
+
+.auth-forgot {
+  color: $text-secondary;
+  text-decoration: none;
+  @include transition-base;
+
+  &:hover {
+    color: #ff85c0;
+  }
+}
+
+// 提交按钮样式
+.auth-submit {
+  height: 48px;
+  font-size: $font-size-md;
+  background: $primary-gradient;
+  border: none;
+  font-weight: 500;
+
+  &:hover {
+    background: $primary-gradient-hover;
+  }
+}
+
+// 分割线样式
+.auth-divider {
+  position: relative;
+  text-align: center;
+  margin: $spacing-lg 0;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 30px);
+    height: 1px;
+    background-color: $border-light;
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
+
+  span {
+    color: $text-light;
+    padding: 0 $spacing-md;
+    background: $white;
+    font-size: $font-size-base;
+  }
+}
+
+// 社交登录按钮
+.auth-social {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.auth-social-btn {
+  flex: 1;
+  height: 40px;
+  border-radius: $border-radius-sm;
+  @include transition-base;
+  font-size: $font-size-base;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &.auth-wechat {
+    background: $success;
+    color: $white;
+    border: none;
+  }
+
+  &.auth-phone {
+    background: $white;
+    border: 1px solid $border-color;
+    color: $text-secondary;
+
+    &:hover {
+      border-color: #ff85c0;
+      color: #ff85c0;
+    }
+  }
+}
+
+// 底部链接和版权信息
+.auth-link {
+  margin-top: $spacing-lg;
+  color: $text-secondary;
+  font-size: $font-size-base;
+
+  a {
+    color: $primary-color;
+    margin-left: $spacing-xs;
+    cursor: pointer;
+    @include transition-base;
+
+    &:hover {
+      color: #ff85c0;
+    }
+  }
+}
+
+.auth-footer {
+  margin-top: $spacing-xl * 1.5;
+  color: $text-light;
+  font-size: $font-size-base;
+}
+
+// 扫码登录样式
+.auth-qr {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &-code {
+    width: 180px;
+    height: 180px;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.qr-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #f5f5f5;
+  border-radius: $border-radius-md;
+  @include flex-center;
+}
+
+.qr-inner {
+  width: 160px;
+  height: 160px;
+  background: $white;
+  border-radius: $border-radius-sm;
+  @include flex-center;
+}
+
+.qr-loading {
+  text-align: center;
+
+  p {
+    margin-top: $spacing-md;
+    color: $text-secondary;
+  }
+}
+
+// 验证码输入框样式
+.auth-code-input {
+  display: flex;
+  gap: $spacing-sm;
+
+  .auth-input {
+    flex: 1;
+  }
+
+  .ant-btn {
+    width: 120px;
+    padding: 0 $spacing-sm;
+    border-color: #ff85c0;
+    color: #ff85c0;
+    @include transition-base;
+    font-size: $font-size-base;
+    height: 48px;
+
+    &:hover {
+      background: rgba(255, 133, 192, 0.1);
+    }
+  }
+}
+
+// 响应式调整
+@include mobile {
+  .auth-container {
+    padding: $spacing-md;
+  }
+
+  .auth-form {
+    margin: 0 (-$spacing-md);
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (max-height: 600px) {
+  .auth-container {
+    padding-top: $spacing-sm;
+    padding-bottom: $spacing-sm;
+  }
+
+  .auth-subtitle {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-xs;
+  }
+
+  .auth-desc {
+    margin-bottom: $spacing-md;
+  }
+
+  .auth-footer {
+    margin-top: $spacing-md;
+  }
+}

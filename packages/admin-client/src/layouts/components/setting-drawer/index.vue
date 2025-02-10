@@ -248,5 +248,5 @@ const { token } = useAntdToken()
 </template>
 
 <style lang="less">
-@import './index.less';
+@use './index.less';
 </style>
