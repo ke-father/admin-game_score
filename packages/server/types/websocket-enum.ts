@@ -47,16 +47,16 @@ export interface IRequest {
     }
     [WebsocketApi.JOIN_GAME]: {
         userId: number,
-        gameId: number
+        gameId: string
     }
     [WebsocketApi.UPDATE_GAME_INFO]: {
         userId: number,
-        gameId: number,
+        gameId: string,
         gameInfo: Game
     },
     [WebsocketApi.UPDATE_TEAM_DATA]: {
         userId: number,
-        gameId: number,
+        gameId: string,
         teamId: number,
         score?: number,
         foul?: boolean,
@@ -69,7 +69,7 @@ export interface IRequest {
     [WebsocketApi.END_GAME]: IControlGame
     [WebsocketApi.LEAVE_GAME]: IControlGame
     [WebsocketApi.GET_GAME_SCORE_INFO]: {
-        gameId: number
+        gameId: string
     }
 }
 

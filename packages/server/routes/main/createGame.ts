@@ -1,38 +1,30 @@
 import express from 'express'
 import GameManager from "../../entity/GameManager";
 import {failureResponse, successResponse} from "../../utils/response";
+import CenterControl from "../../entity/centerControl";
 
 const router = express.Router()
 
-interface ICreateGame {
-    // 用户id
-    userId: number
-    // 比赛方式id
-    playStyleId: number
-    // 创建比赛的分类id
-    categoryId: number
-    // 比赛名称
-    gameName: string
-}
-
 router.post('/', async (req, res) => {
     try {
+        console.log(11111111)
         // 创建用户
         const { userId, playStyleId, gameName, teams, sectionsNumber } = req.body
 
         // 创建比赛
-        const game = await GameManager.Instance.createGame({
-            creatorId: userId,
-            playStyleId,
-            gameName,
+        const info = await CenterControl.initGame({
+            userId,
+            name: gameName,
+            gamePlayStyleId: playStyleId,
             teams,
             sectionsNumber
         })
 
-        // console.log('gameId', game.gameId)
+        console.log('gameInfo', info)
 
-        successResponse(res, '创建成功', {game})
+        successResponse(res, '创建成功', {...info})
     } catch (e) {
+        console.log(e)
         failureResponse(res, '创建失败')
     }
 })

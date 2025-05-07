@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Team.init({
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+      primaryKey: true
+    },
     gameId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false

@@ -16,4 +16,7 @@ router.use('/wechat', require('./wechat'))
 // 上传接口
 router.use('/uploads', require('./upload'))
 
+// 图形验证码接口
+router.use('/captcha', require('./captcha'))
+
 module.exports = router

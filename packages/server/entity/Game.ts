@@ -1,16 +1,19 @@
 import TeamManager from "./TeamManager";
 import GameManager from "./GameManager";
 import {NotFound} from "http-errors";
+import {setKey} from "../utils/redis";
 
 interface IGame {
     // 创建人
-    creatorId: number
+    userId: number
     // 比赛id
-    gameId: number
+    id: string
     // 比赛方式id
-    playStyleId: number
+    gamePlayStyleId: number
     // 比赛名称
-    gameName: string
+    name: string
+    // 比赛队伍id
+    teamIds?: string
     // 比赛logo
     logo?: string
     // 比赛签名
@@ -35,9 +38,9 @@ interface IGame {
 
 export default class Game {
     // 创建人
-     creatorId: number = null!
+    userId: number = null!
     // 比赛id
-     gameId: number = null!
+     id: string = null!
     // 比赛方式id
      playStyleId: number = null!
     // 比赛名称
@@ -63,10 +66,21 @@ export default class Game {
     // 暂停时间
     pauseTime?: number = 0
     // 队伍数据
-     teamMap?: Map<number, TeamManager> = new Map();
+    teamMap?: string[] = []
 
     constructor(params: IGame) {
         Object.assign(this, params)
+    }
+
+    // 保存比赛
+    async saveGameToRedis () {
+        await setKey(this.id, this)
+    }
+
+    async saveGameToDB () {}
+
+    joinGame (teamId: string) {
+        this.teamMap.push(teamId)
     }
 
     // 开始比赛
@@ -76,7 +90,7 @@ export default class Game {
         this.pauseTime = 0
         this.gameTimer = setInterval(() => {
             this.gameTime += 1000
-            GameManager.Instance.syncGameTime(this.gameId, this.gameTime)
+            GameManager.Instance.syncGameTime(this.id, this.gameTime)
         }, 1000)
     }
 
@@ -92,7 +106,7 @@ export default class Game {
     // 暂停比赛
     pause () {
         this.handlePause((time: number) => {
-            GameManager.Instance.syncGamePause(this.gameId, time)
+            GameManager.Instance.syncGamePause(this.id, time)
         })
     }
 
@@ -105,7 +119,7 @@ export default class Game {
         team.pause(this)
 
         this.handlePause((time: number) => {
-            GameManager.Instance.syncGamePause(this.gameId, time, teamId)
+            GameManager.Instance.syncGamePause(this.id, time, teamId)
         })
     }
 

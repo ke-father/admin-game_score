@@ -2,17 +2,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Wechat_sessions', {
-      openid: {
+    await queryInterface.createTable('Third_party_logins', {
+      id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.STRING,
-        unique: true
+        type: Sequelize.INTEGER
       },
-      session_key: {
+      user_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      third_party_type: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      unionid: {
+      third_party_id: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      third_party_token: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       createdAt: {
@@ -26,6 +36,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Wechat_sessions');
+    await queryInterface.dropTable('Third_party_logins');
   }
 };

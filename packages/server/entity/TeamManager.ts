@@ -1,15 +1,10 @@
 import Singleton from 'aprnine-utils/src/Singleton'
-import Team, { ITeamParams } from "./Team";
-import { generate10DigitId } from '../utils/format'
-import {IRequest, WebsocketApi} from "../types/websocket-enum";
-import {NotFound} from "http-errors";
+import Team, {ITeam} from "./Team";
+import {generate10DigitId} from '../utils/format'
+import {getKeysByPattern} from "../utils/redis";
 
 export type ICreateTeamItem = {
     teamName: string
-}
-
-export type ICreateTeam = {
-    gameId:number, teams: ICreateTeamItem[],  sectionsNumber: number
 }
 
 export default class TeamManager extends Singleton{
@@ -18,42 +13,40 @@ export default class TeamManager extends Singleton{
     // id与队伍map
     idMapTeams: Map<number, Team> = new Map()
     // 比赛id与队伍map
-    gameIdMapTeams: Map<number, Team[]> = new Map()
+    gameIdMapTeams: Map<string, Team[]> = new Map()
 
     static get Instance() {
         return super.GetInstance<TeamManager>()
     }
 
-    // 创建队伍 复数  因为可能有多个队伍
-    createTeams<T = any[]> (params: ICreateTeam): Promise<Team[]> {
-        return new Promise((resolve, reject) => {
-            const { gameId, teams, sectionsNumber } = params
-            resolve(teams.map((team, index) => this.createTeam(gameId, team, sectionsNumber, index)))
+    async createTeam (gameId: string, teamItem: ICreateTeamItem, sectionsNumber: number): Promise<Team> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const teamId = generate10DigitId()
+                const { teamName } = teamItem
+                const teamInstance = new Team({
+                    id: teamId,
+                    gameId: gameId,
+                    name: teamName,
+                    sectionsNumber
+                })
+
+                resolve(teamInstance)
+            } catch (e) {
+                reject(e)
+            }
         })
     }
 
-    createTeam (gameId: number, teamItem: ICreateTeamItem, sectionsNumber: number, index: number) {
-        // 创建10位数id
-        // const id = generate10DigitId()
-        const id = index ? 10086 : 10000
-        if (this.idMapTeams.has(id)) return this.createTeam(gameId, teamItem, sectionsNumber, index)
+    async findTeamByGameId (id: string) {
+        return getKeysByPattern(`team:${id}_*`)
+    }
 
-        // 规整参数
-        const teamParams = {
-            sectionsNumber,
-            gameId,
-            name: teamItem.teamName,
-            id
-        }
-        const team = new Team(teamParams)
-        this.idMapTeams.set(id, team)
-        // 添加到比赛map中
-        if (this.gameIdMapTeams.has(gameId)) {
-            this.gameIdMapTeams.get(gameId)!.push(team)
-        } else {
-            this.gameIdMapTeams.set(gameId, [team])
-        }
+    async findTeamById (id: string) {
+        return getKeysByPattern(`*_${id}`)
+    }
 
-        return team
+    async prePareData (data: ITeam) {
+        return new Team(data)
     }
 }

@@ -83,7 +83,7 @@ export default class CommonRequest {
         }
     }
 
-    get (url: string, params: object, config: IConfig = {}) {
+    get <T = any> (url: string, params: object, config: IConfig = {}) {
         const getConfig: IConfig = {
             ...config,
             url,
@@ -91,7 +91,7 @@ export default class CommonRequest {
             method: 'GET'
         }
 
-        return new Promise( async (resolve, reject) => {
+        return new Promise<T>( async (resolve, reject) => {
            await this.httpRequest(getConfig, resolve, reject)
         })
     }

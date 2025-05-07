@@ -1,6 +1,16 @@
 import {useEffect, useRef, useState} from "react";
 
+// interface IGameStage {
+//     // 时间
+//     time: number,
+//     // 阶段
+//     stage: number
+// }
+
 export default () => {
+    // 规则一 分段
+    // const [gameStage, setGameStage] = useState<IGameStage[]>([])
+    // 当前时间
     let [time, setTime] = useState(0)
     let currentTime = useRef(time)
 

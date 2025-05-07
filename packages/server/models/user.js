@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.User.hasMany(models.Third_party_login, {
+        foreignKey: 'user_id',
+        as: 'third_party_logins'
+      })
     }
   }
   User.init({
@@ -39,7 +43,8 @@ module.exports = (sequelize, DataTypes) => {
       get () {
         return moment(this.getDataValue(User.updatedAt)).format('LL')
       }
-    }
+    },
+    email: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

@@ -37,43 +37,43 @@ export default function (websocketApp: MyServer) {
 
     // 校验用户
     const checkUser = (args) => {
-        const { userId, gameId } = args
-        if (!userId || !gameId) throw new BadRequest("请传入用户ID和比赛ID");
-        const game = GameManager.Instance.idMapGames.get(gameId);
-        if (!game) throw new BadRequest("比赛不存在");
-        // 判断当前用户是否为比赛创建者
-        if (game?.creatorId !== userId) throw new Unauthorized("当前用户不可更改比赛信息");
-
-        return game
+        // const { userId, gameId } = args
+        // if (!userId || !gameId) throw new BadRequest("请传入用户ID和比赛ID");
+        // // const game = GameManager.Instance.idMapGames.get(gameId);
+        // if (!game) throw new BadRequest("比赛不存在");
+        // // 判断当前用户是否为比赛创建者
+        // if (game?.creatorId !== userId) throw new Unauthorized("当前用户不可更改比赛信息");
+        //
+        // return game
     }
 
     // 加入比赛内容
-    websocketApp.setApi<IRequest[WebsocketApi.JOIN_GAME]>(
-        WebsocketApi.JOIN_GAME,
-        (connection: Connection<WebsocketApi>, args) => {
-            if (!args.userId || !args.gameId)
-                throw new BadRequest("请传入用户ID和比赛ID");
-
-            const {userId, gameId} = args;
-
-            const user = UserManager.Instance.createUser({
-                user: {id: userId},
-                connection,
-            });
-            // 关联用户与websocket实例
-            connection.userId = userId;
-
-            // 加入比赛
-            const game = GameManager.Instance.idMapGames.get(gameId);
-
-            if (!game) throw new BadRequest("比赛不存在");
-            // 关联id
-            user.gameId = game.gameId;
-            GameManager.Instance.joinGame(userId, game.gameId);
-
-            return game;
-        }
-    );
+    // websocketApp.setApi<IRequest[WebsocketApi.JOIN_GAME]>(
+        // WebsocketApi.JOIN_GAME,
+        // (connection: Connection<WebsocketApi>, args) => {
+        //     if (!args.userId || !args.gameId)
+        //         throw new BadRequest("请传入用户ID和比赛ID");
+        //
+        //     const {userId, gameId} = args;
+        //
+        //     const user = UserManager.Instance.createUser({
+        //         user: {id: userId},
+        //         connection,
+        //     });
+        //     // 关联用户与websocket实例
+        //     connection.userId = userId;
+        //
+        //     // 加入比赛
+        //     const game = GameManager.Instance.idMapGames.get(gameId);
+        //
+        //     if (!game) throw new BadRequest("比赛不存在");
+        //     // 关联id
+        //     user.gameId = game.gameId;
+        //     GameManager.Instance.joinGame(userId, game.gameId);
+        //
+        //     return game;
+        // }
+    // );
 
     // 更新比赛信息
     // websocketApp.setApi<IRequest[WebsocketApi.UPDATE_GAME_INFO]>(
@@ -112,10 +112,11 @@ export default function (websocketApp: MyServer) {
                     if (!team) throw new BadRequest('队伍不存在');
 
                     // 要么得分要么犯规
+                    // @ts-ignore
                     const data = score ? team.updateScore(game, score) : team.updateFoul(game);
 
                     // 更新所有关注该比赛的用户
-                    GameManager.Instance.syncTeamDataInfo(game.gameId, data);
+                    // GameManager.Instance.syncTeamDataInfo(game.gameId, data);
                     resolve(team);
                 } catch (e) {
                     reject(e);
@@ -128,14 +129,14 @@ export default function (websocketApp: MyServer) {
     websocketApp.setApi<IRequest[WebsocketApi.START_GAME]> (WebsocketApi.START_GAME, (connection: Connection<WebsocketApi>, args) => {
         const game = checkUser(args)
         // 更新内容
-        game.start()
+        // game.start()
         return true
     })
 
     // 暂停比赛
     websocketApp.setApi<IRequest[WebsocketApi.PAUSE_GAME]> (WebsocketApi.PAUSE_GAME, (connection: Connection<WebsocketApi>, args) => {
         const game = checkUser(args)
-        args?.teamId ? game.pause() : game.teamPause(args.teamId)
+        // args?.teamId ? game.pause() : game.teamPause(args.teamId)
         return true
     })
 
@@ -145,7 +146,7 @@ export default function (websocketApp: MyServer) {
         (connection: Connection<WebsocketApi>, args) => {
             const game = checkUser(args)
 
-            game.endGame()
+            // game.endGame()
 
             return true;
         }
@@ -156,8 +157,8 @@ export default function (websocketApp: MyServer) {
         WebsocketApi.GET_GAME_SCORE_INFO,
         (connection: Connection<WebsocketApi>, args) => {
             if (!args.gameId) throw new BadRequest('请传入比赛Id')
-            const game = GameManager.Instance.idMapGames.get(args.gameId)
-            if (!game) throw new NotFound('比赛不存在')
+            // const game = GameManager.Instance.idMapGames.get(args.gameId)
+            // if (!game) throw new NotFound('比赛不存在')
 
             const teams = TeamManager.Instance.gameIdMapTeams.get(args.gameId).map(team => ({
                 teamId: team.id,
@@ -174,8 +175,8 @@ export default function (websocketApp: MyServer) {
             }))
 
             return {
-                gameId: game.gameId,
-                gameName: game.gameName,
+                // gameId: game.gameId,
+                // gameName: game.gameName,
                 teams
             }
         }

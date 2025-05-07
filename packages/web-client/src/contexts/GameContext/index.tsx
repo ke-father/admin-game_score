@@ -1,14 +1,29 @@
 import React, { createContext, useContext } from "react";
-import useAboutTime from './aboutTime.tsx'
+import useAboutTime from './aboutTime.ts'
+import useAboutState from './aboutState.ts'
+import useAboutFoul from './aboutFoul.ts'
 
-const GameContext = createContext<ReturnType<typeof useAboutTime>>(null!)
+type IAboutTime = ReturnType<typeof useAboutTime>
+type IGameContext = {
+    constructorState: <T>(team: T[]) => T[]
+} & IAboutTime
+const GameContext = createContext<IGameContext>(null!)
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     // 时间状态
     const gameTimeState = useAboutTime()
+    // 构造数据状态
+    const constructorState: <T>(team: T[]) => T[] = (team) => {
+        return team.map((item) => ({
+            ...item,
+            fouls: useAboutFoul(),
+            pauseState: useAboutState()
+        }))
+    }
     // 比赛状态
     const gameState = {
-        ...gameTimeState
+        ...gameTimeState,
+        constructorState,
     }
 
     return (
