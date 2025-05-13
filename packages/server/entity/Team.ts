@@ -54,7 +54,8 @@ export default class Team {
         this.members = params.members
         this.score = params.score
         this.sectionsNumber = params.sectionsNumber
-        if (params.timeDetail.length) this.timeDetail = params.timeDetail
+        this.teamKey = `Team:${this.gameId}:${this.id}`
+        if (params?.timeDetail?.length) this.timeDetail = params.timeDetail
         else {
             for (let i = 0; i < params.sectionsNumber; i++) {
                 this.timeDetail.push(new TimeRecord())
@@ -64,7 +65,6 @@ export default class Team {
 
     // 加入比赛
     joinGame (game: Game) {
-        this.teamKey = `team:${this.gameId}_${this.id}`
         game.teamMap.push(this.teamKey)
     }
 
@@ -102,13 +102,5 @@ export default class Team {
                 [gameTime]: this.timeDetail[game.currentRound - 1].timeRecords[gameTime]
             }
         }
-    }
-
-    // 保存进入数据库
-    async saveTeamToDB () {}
-
-    // 保存进入redis
-    async saveTeamToRedis () {
-        await setKey(this.teamKey, this)
     }
 }

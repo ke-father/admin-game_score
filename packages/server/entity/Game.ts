@@ -3,9 +3,9 @@ import GameManager from "./GameManager";
 import {NotFound} from "http-errors";
 import {setKey} from "../utils/redis";
 
-interface IGame {
+export interface IGame {
     // 创建人
-    userId: number
+    userId: string
     // 比赛id
     id: string
     // 比赛方式id
@@ -67,17 +67,13 @@ export default class Game {
     pauseTime?: number = 0
     // 队伍数据
     teamMap?: string[] = []
+    // 比赛key
+    gameKey?: string = ''
 
     constructor(params: IGame) {
         Object.assign(this, params)
+        this.gameKey = `Game:${this.userId}:${this.id}`
     }
-
-    // 保存比赛
-    async saveGameToRedis () {
-        await setKey(this.id, this)
-    }
-
-    async saveGameToDB () {}
 
     joinGame (teamId: string) {
         this.teamMap.push(teamId)
@@ -107,19 +103,6 @@ export default class Game {
     pause () {
         this.handlePause((time: number) => {
             GameManager.Instance.syncGamePause(this.id, time)
-        })
-    }
-
-    // 关于队伍暂停
-    teamPause (teamId: number) {
-        // 记录队伍暂停
-        const team = TeamManager.Instance.idMapTeams.get(teamId)
-        if (!team) throw new NotFound('队伍不存在')
-
-        team.pause(this)
-
-        this.handlePause((time: number) => {
-            GameManager.Instance.syncGamePause(this.id, time, teamId)
         })
     }
 

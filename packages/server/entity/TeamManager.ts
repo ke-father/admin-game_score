@@ -1,7 +1,7 @@
 import Singleton from 'aprnine-utils/src/Singleton'
 import Team, {ITeam} from "./Team";
 import {generate10DigitId} from '../utils/format'
-import {getKeysByPattern} from "../utils/redis";
+import {delKey, getKey, getKeysByPattern, setKey} from "../utils/redis";
 
 export type ICreateTeamItem = {
     teamName: string
@@ -38,15 +38,28 @@ export default class TeamManager extends Singleton{
         })
     }
 
-    async findTeamByGameId (id: string) {
-        return getKeysByPattern(`team:${id}_*`)
+    async findTeamKeysByGameId (id: string) {
+        return getKeysByPattern(`Team:${id}:*`)
     }
 
-    async findTeamById (id: string) {
-        return getKeysByPattern(`*_${id}`)
+    async findTeam (key: string) {
+        return await getKey(key)
     }
 
     async prePareData (data: ITeam) {
         return new Team(data)
+    }
+
+    // 保存进入数据库
+    async saveTeamToDB () {}
+
+    // 保存进入redis
+    async saveTeamToRedis (teamInfo: Team) {
+        await setKey(teamInfo.teamKey, teamInfo)
+    }
+
+    // 删除队伍
+    async deleteTeamToRedis (teamInfo: Team) {
+        await delKey(teamInfo.teamKey)
     }
 }

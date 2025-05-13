@@ -9,8 +9,6 @@
     "start:server": "cd packages/server && npm run start",
     "start:client": "cd packages/admin-client && npm run dev",
     "start:web:client": "cd packages/web-client && npm run dev",
-    "start:client:server": "cd packages/client && npm run start:nirto",
-    "start:client:build:nitro": "cd packages/client && npm run build:nitro",
     "generate:Models": "cd packages/server/models && ts-node auto.ts",
     "test": "cd packages/utils && ts-node request.ts",
     "build:aprnine-websocket": "cd packages/aprnine-websocket && npm run build"

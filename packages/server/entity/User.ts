@@ -6,11 +6,11 @@ import {WebsocketApi} from "../types/websocket-enum";
 // 用户
 export default class User {
     // 用户ID
-    id: number = null!
+    id: string = null!
     // websocket链接实例
     connection: Connection<WebsocketApi> = null!
     // 关联的比赛ID
-    gameId?: number = null!
+    gameKeys?: string = null!
     // 用户名
     username?: string = null!
     // 昵称

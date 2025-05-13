@@ -47,33 +47,34 @@ export default function (websocketApp: MyServer) {
         // return game
     }
 
+
     // 加入比赛内容
-    // websocketApp.setApi<IRequest[WebsocketApi.JOIN_GAME]>(
-        // WebsocketApi.JOIN_GAME,
-        // (connection: Connection<WebsocketApi>, args) => {
-        //     if (!args.userId || !args.gameId)
-        //         throw new BadRequest("请传入用户ID和比赛ID");
-        //
-        //     const {userId, gameId} = args;
-        //
-        //     const user = UserManager.Instance.createUser({
-        //         user: {id: userId},
-        //         connection,
-        //     });
-        //     // 关联用户与websocket实例
-        //     connection.userId = userId;
-        //
-        //     // 加入比赛
-        //     const game = GameManager.Instance.idMapGames.get(gameId);
-        //
-        //     if (!game) throw new BadRequest("比赛不存在");
-        //     // 关联id
-        //     user.gameId = game.gameId;
-        //     GameManager.Instance.joinGame(userId, game.gameId);
-        //
-        //     return game;
-        // }
-    // );
+    websocketApp.setApi<IRequest[WebsocketApi.JOIN_GAME]>(
+        WebsocketApi.JOIN_GAME,
+        (connection: Connection<WebsocketApi>, args) => {
+            if (!args.userId || !args.gameId)
+                throw new BadRequest("请传入用户ID和比赛ID");
+
+            const {userId, gameId} = args;
+
+            const user = UserManager.Instance.createUser({
+                user: {id: userId},
+                connection,
+            });
+            // 关联用户与websocket实例
+            connection.userId = userId;
+
+            // 加入比赛
+            // const game = GameManager.Instance.idMapGames.get(gameId);
+            //
+            // if (!game) throw new BadRequest("比赛不存在");
+            // // 关联id
+            // user.gameId = game.gameId;
+            // GameManager.Instance.joinGame(userId, game.gameId);
+            //
+            // return game;
+        }
+    );
 
     // 更新比赛信息
     // websocketApp.setApi<IRequest[WebsocketApi.UPDATE_GAME_INFO]>(

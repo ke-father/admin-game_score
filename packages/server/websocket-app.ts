@@ -20,14 +20,15 @@ const server = new MyServer<WebsocketApi>({
 })
 
 // 有人链接
-server.on(MyServer.connection, () => {
+server.on(MyServer.connection, (connection) => {
     console.log('connection：来人了', server.connections.size)
+    console.log('connection：来人了', connection)
 })
 
 // 有人走
 server.on(MyServer.disconnection, (connection) => {
     console.log('disconnection：走人了')
-    if (connection.userId) UserManager.Instance.removeUser(connection.userId)
+    UserManager.Instance.removeUser(connection.userId)
 })
 
 websocketEvent(server)

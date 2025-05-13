@@ -21,7 +21,9 @@ export default class UserManager extends Singleton {
     // 用户
     users: Set<User> = new Set<User>()
     // 用户列表
-    idMapUsers: Map<number, User> = new Map()
+    idMapUsers: Map<string, User> = new Map()
+    // 比赛列表对应的用户
+    gameKeysMapUsers: Map<string, string[]> = new Map()
 
     /**
      * 创建用户
@@ -37,7 +39,7 @@ export default class UserManager extends Singleton {
     }
 
 
-    removeUser(userId: number) {
+    removeUser(userId: string) {
         const user = this.idMapUsers.get(userId)
         // 查找用户
         if (!user) return
@@ -45,6 +47,7 @@ export default class UserManager extends Singleton {
         // GameManager.Instance.leaveGame(userId, user.gameId)
         this.users.delete(user)
         this.idMapUsers.delete(userId)
-
+        const users = this.gameKeysMapUsers.get(user.gameKeys)
+        this.gameKeysMapUsers.set(user.gameKeys, users.filter(item => item !== user.id))
     }
 }

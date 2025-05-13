@@ -1,17 +1,12 @@
-import TeamManager from "./TeamManager";
 import Game from "./Game";
 import Singleton from 'aprnine-utils/src/Singleton'
-import User from "./User";
-import UserManager from "./UserManager";
-import {WebsocketApi} from "../types/websocket-enum";
 import {generate10DigitId} from "../utils/format";
-import {ICreateTeamItem} from "./TeamManager";
-import Team from "./Team";
-import {NotFound} from "http-errors";
+import {delKey, getKey, getKeysByPattern, setKey} from "../utils/redis";
+import User from "./User";
 
 interface ICreateGame {
     // 创建者id
-    userId: number,
+    userId: string,
     // 比赛方式id
     gamePlayStyleId: number,
     // 比赛名称
@@ -47,8 +42,26 @@ export default class GameManager extends Singleton{
         })
     }
 
+    async findGameByUserId (userId: string) {
+        return await getKeysByPattern(`Game:${userId}:*`)
+    }
+
     // 查找比赛
-    async findGame() {}
+    async findGame(gameKey) {
+        return await getKey(gameKey)
+    }
+
+    // 保存比赛
+    async saveGameToRedis (gameInfo: Game) {
+        await setKey(gameInfo.gameKey, gameInfo)
+    }
+
+    // 删除比赛
+    async deleteGameToRedis (gameInfo: Game) {
+        await delKey(gameInfo.gameKey)
+    }
+
+    async saveGameToDB () {}
 
     // 加入比赛
     joinGame (userId: number, gameId: string) {

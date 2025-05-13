@@ -4,7 +4,7 @@ import StatusTag from "@components/StatusTag";
 import './style.scss'
 import {Button, Popover} from "antd";
 import {CaretRightOutlined, LinkOutlined, RedoOutlined, ReloadOutlined, UndoOutlined} from "@ant-design/icons";
-import {TeamInfo, ITeamInfo} from './TeamInfo.tsx'
+import {TeamInfo} from './TeamInfo.tsx'
 import ToolTip from "@components/ToolTip";
 import {formatGameTime} from "@utils/formate.ts";
 import useGameHandler from './handler.ts'
