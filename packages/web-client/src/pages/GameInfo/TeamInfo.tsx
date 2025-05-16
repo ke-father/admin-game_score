@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, { useRef} from "react";
 import Animation from "@components/Animation";
 import {Button} from "antd";
 import {IScoreRef} from "@components/Animation/Score";
@@ -21,11 +21,12 @@ export interface ITeamInfo {
     TeamScore: number
 }
 export interface ITeamInfoProps {
+    TeamMembers?: React.ReactNode
     teamId: number | string
     TeamInfo: ITeamInfo
     onScoreChange: (teamId: number | string, currentScore: number, getScore: number) => void
 }
-export const TeamInfo: React.FC<ITeamInfoProps> = ({ TeamInfo, onScoreChange, teamId }) => {
+export const TeamInfo: React.FC<ITeamInfoProps> = ({ TeamInfo, onScoreChange, teamId, TeamMembers }) => {
     const TeamName = TeamInfo?.TeamName || '队伍名称'
     // 得分组件实例
     const ScoreRef = useRef<IScoreRef>(null!)
@@ -86,6 +87,8 @@ export const TeamInfo: React.FC<ITeamInfoProps> = ({ TeamInfo, onScoreChange, te
                     <Button onClick={handlePause}>暂停</Button>
                     <Button onClick={handleFoul}>犯规</Button>
                 </div>
+
+                { TeamMembers }
             </div>
         </DefaultCard>
     )

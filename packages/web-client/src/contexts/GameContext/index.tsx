@@ -12,7 +12,7 @@ const GameContext = createContext<IGameContext>(null!)
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     // 时间状态
     const gameTimeState = useAboutTime()
-    // 构造数据状态
+
     const constructorState: <T>(team: T[]) => T[] = (team) => {
         return team.map((item) => ({
             ...item,

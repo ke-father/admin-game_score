@@ -1,6 +1,5 @@
 import { useLocation, useNavigate, useSearchParams, useParams } from 'react-router-dom'
 // import FloatingBackCard from "@components/FloatingBackCard";
-import StatusTag from "@components/StatusTag";
 import './style.scss'
 import {Button, Popover} from "antd";
 import {CaretRightOutlined, LinkOutlined, RedoOutlined, ReloadOutlined, UndoOutlined} from "@ant-design/icons";
@@ -10,6 +9,7 @@ import {formatGameTime} from "@utils/formate.ts";
 import useGameHandler from './handler.ts'
 import { useGame } from "@/contexts/GameContext";
 import QRCode from "@components/QRCode";
+import GameInfoHeader from "@components/GameModule/InfoHeader";
 
 
 const GameInfo = (...args: any[]) => {
@@ -68,46 +68,28 @@ const GameInfo = (...args: any[]) => {
             {/*关于back点击*/}
             {/*<FloatingBackCard className="game-back" onBackClick={handleBackClick}></FloatingBackCard>*/}
 
-            {/*顶部*/}
-            <header>
-                {/*左侧名称与比赛状态*/}
-                <div className="game-name">
-                    {/*名称*/}
-                    <div className="title">2024春季篮球联赛</div>
-
-                    {/*底部状态与时间*/}
-                    <div className="status">
-                        {/*状态*/}
-                        <StatusTag status={2}></StatusTag>
-                        {/*时间*/}
-                        <div className="status-time">
-                            <span>比赛时间：</span>
-                            <span>2022-12-12 12:12:12</span>
-                        </div>
-                    </div>
-                </div>
-
+            <GameInfoHeader name="2024春季篮球联赛" time="2022-12-12 12:12:12" status={2}>
                 {/*右侧按钮区域*/}
                 <div className="game-config">
-                    <Button onClick={handleStartClick} icon={<CaretRightOutlined />}>开始比赛</Button>
-                    <Button onClick={handleResetClick} icon={<ReloadOutlined />}>重置分数</Button>
-                    <Button onClick={handlePauseClick} icon={<ReloadOutlined />}>暂停比赛</Button>
+                    <Button onClick={handleStartClick} icon={<CaretRightOutlined/>}>开始比赛</Button>
+                    <Button onClick={handleResetClick} icon={<ReloadOutlined/>}>重置分数</Button>
+                    <Button onClick={handlePauseClick} icon={<ReloadOutlined/>}>暂停比赛</Button>
                     {/*撤销操作*/}
                     <ToolTip text="撤销操作">
-                        <Button onClick={() => setGameTime(1000)} icon={<UndoOutlined />}></Button>
+                        <Button onClick={() => setGameTime(1000)} icon={<UndoOutlined/>}></Button>
                     </ToolTip>
                     {/*恢复操作*/}
                     <ToolTip text="恢复操作">
-                        <Button icon={<RedoOutlined />}></Button>
+                        <Button icon={<RedoOutlined/>}></Button>
                     </ToolTip>
                     {/*分享链接*/}
                     <Popover placement="bottom" content={QRCode({
                         url: 'https://www.baidu.com'
                     })}>
-                        <Button icon={<LinkOutlined />}></Button>
+                        <Button icon={<LinkOutlined/>}></Button>
                     </Popover>
                 </div>
-            </header>
+            </GameInfoHeader>
 
             {/*内容区域*/}
             <main>
@@ -131,8 +113,6 @@ const GameInfo = (...args: any[]) => {
                         teamId={'team2'}
                         onScoreChange={onScoreChange}></TeamInfo>
                 </div>
-
-                <div className="game-handler"></div>
             </main>
         </div>
     )
